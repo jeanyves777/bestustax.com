@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 50" fill="none">
+  <!-- Checkmark/Growth Icon - Dark Blue -->
+  <g transform="translate(0, 8) scale(0.045)">
+    <polygon fill="#1E3A5F" points="482.6,520.6 329.4,396 493.3,647.6 1000.2,144.4"/>
+    <polygon fill="#1E3A5F" points="742.1,647.6 868.4,647.6 868.4,333.3 742.1,458.7"/>
+    <polygon fill="#1E3A5F" points="699,647.6 699,501.5 551.8,647.6"/>
+    <polygon fill="#1E3A5F" points="911.5,290.5 911.5,647.6 1058.6,647.6 1058.6,144.4"/>
+  </g>
+
+  <!-- BEST Text - Dark Blue -->
+  <g transform="translate(80, 10) scale(1.1)">
+    <path fill="#1E3A5F" d="M0 5 l0 6 l-2.5 2.5 l2.5 2.5 l0 6 l-3.5 3.5 l-17 0 l0 -24 l17 0 l3.5 3.5 z M-4 11.5 l0 -4 l-9 0 l0 4 l9 0 z M-4 21.5 l0 -4 l-9 0 l0 4 l9 0 z M30 8.5 l-12 0 l0 4 l10.5 0 l0 5 l-10.5 0 l0 4 l12 0 l0 5 l-14.5 0 l-3.5 -3.5 l0 -20 l18 0 l0 5 z M56 8.5 l-8 0 l0 4 l10 0 l3.5 3.5 l0 7 l-3.5 3.5 l-12.5 0 l-3.5 -3.5 l0 -3.5 l4 0 l2 2 l8 0 l0 -4 l-10 0 l-3.5 -3.5 l0 -7 l3.5 -3.5 l12.5 0 l3.5 3.5 l0 3.5 l-4 0 z M66 8.5 l0 -5 l18 0 l0 5 l-6 0 l0 17 l-6 0 l0 -17 l-6 0 z"/>
+  </g>
+</svg>

@@ -1,0 +1,80 @@
+.
+|____.eslintrc.json
+|____src
+| |____lib
+| | |____cn.ts
+| |____types
+| | |____index.ts
+| |____components
+| | |____animations
+| | | |____FloatingNumbers.tsx
+| | | |____AnimatedCounter.tsx
+| | |____calculators
+| | | |____TaxCalculator.tsx
+| | |____home
+| | | |____ServicesSection.tsx
+| | | |____HeroSection.tsx
+| | |____forms
+| | |____layout
+| | | |____ThemeToggle.tsx
+| | | |____ThemeProvider.tsx
+| | | |____Navbar.tsx
+| | | |____Footer.tsx
+| | |____ui
+| | | |____Card.tsx
+| | | |____Button.tsx
+| | | |____Input.tsx
+| |____utils
+| |____app
+| | |____services
+| | | |____personal-tax
+| | | | |____page.tsx
+| | |____page.tsx
+| | |____layout.tsx
+| |____styles
+| | |____globals.css
+| |____hooks
+| | |____useScrollAnimation.ts
+|____package.json
+|____.env.example
+|____QUICKSTART.md
+|____public
+| |____icons
+| |____images
+| | |____Logo Files
+| | | |____Black logo - no background.eps
+| | | |____New folder
+| | | | |____6.png
+| | | |____188218018_padded_logo.png
+| | | |____For Print
+| | | | |____pdf
+| | | | | |____Color logo with background.pdf
+| | | | | |____White logo - no background.pdf
+| | | | | |____Black logo - no background.pdf
+| | | | | |____Color logo - no background.pdf
+| | | | |____eps
+| | | | | |____Black logo - no background.eps
+| | | | | |____Color logo - no background.eps
+| | | | | |____Color logo with background.eps
+| | | | | |____White logo - no background.eps
+| | | |____Color logo - no background.eps
+| | | |____Color logo with background.eps
+| | | |____Color logo with background.png
+| | | |____Black logo - no background.png
+| | | |____Copy of Selling Posts Kit #2.zip
+| | | |____White logo - no background.png
+| | | |____For Web
+| | | | |____svg
+| | | | | |____Color logo with background.svg
+| | | | | |____Color logo - no background.svg
+| | | | | |____White logo - no background.svg
+| | | | | |____Black logo - no background.svg
+| | | | |____png
+| | | | | |____Color logo with background.png
+| | | | | |____Black logo - no background.png
+| | | | | |____White logo - no background.png
+| | | | | |____Color logo - no background.png
+| | | | |____Favicons
+| | | | | |____Android.png
+| | | | | |____iPhone.png
+| | | | | |____browser.png
