@@ -1,105 +1,145 @@
-import { Metadata } from 'next'
-import { TaxCalculator } from '@/components/calculators/TaxCalculator'
-import { CheckCircle, Info } from '@phosphor-icons/react/dist/ssr'
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Tax Refund Estimator | BestUsTax',
-  description:
-    'Estimate your federal tax refund for 2024. Free tax refund calculator with accurate 2024 tax brackets.',
-}
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { TaxCalculator } from '@/components/calculators/TaxCalculator'
+import { CheckCircle, Info, ArrowRight, Calculator, ShieldCheck, Lightning, Headset, Question } from '@phosphor-icons/react'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
 
 const tips = [
-  'Enter your total annual income from all sources',
-  'Use the standard deduction unless you itemize',
-  'Include all eligible tax credits',
-  'Enter total federal tax withheld from your W-2s',
+  { icon: Calculator, text: 'Enter your total annual income from all sources' },
+  { icon: CheckCircle, text: 'Use the standard deduction unless you itemize' },
+  { icon: ShieldCheck, text: 'Include all eligible tax credits' },
+  { icon: Lightning, text: 'Enter total federal tax withheld from W-2s' },
 ]
 
 const faqs = [
-  {
-    question: 'How accurate is this tax refund calculator?',
-    answer: 'Our calculator uses current 2024 federal tax brackets and provides a reasonable estimate. However, actual results may vary based on your complete tax situation. For the most accurate calculation, consult with a tax professional.',
-  },
-  {
-    question: 'What is the standard deduction for 2024?',
-    answer: 'For 2024, the standard deduction is $14,600 for single filers, $29,200 for married filing jointly, $14,600 for married filing separately, and $21,900 for head of household.',
-  },
-  {
-    question: 'When can I expect my refund?',
-    answer: 'If you e-file and choose direct deposit, you can typically receive your refund within 21 days of the IRS accepting your return. Paper returns may take 6-8 weeks.',
-  },
-  {
-    question: 'What if I owe money instead of getting a refund?',
-    answer: 'If your calculated result shows you owe taxes, consider adjusting your W-4 withholding with your employer. You can also make estimated quarterly payments to avoid owing at tax time.',
-  },
+  { question: 'How accurate is this calculator?', answer: 'Our calculator uses current 2024 federal tax brackets and provides a reasonable estimate. Actual results may vary based on your complete tax situation.' },
+  { question: 'What is the standard deduction for 2024?', answer: 'For 2024: $14,600 (single), $29,200 (married filing jointly), $14,600 (married filing separately), $21,900 (head of household).' },
+  { question: 'When can I expect my refund?', answer: 'E-file with direct deposit: within 21 days. Paper returns: 6-8 weeks after IRS acceptance.' },
+  { question: 'What if I owe money?', answer: 'Consider adjusting W-4 withholding or making estimated quarterly payments to avoid owing at tax time.' },
 ]
 
 export default function RefundEstimatorPage() {
   return (
     <div className="pt-20">
-      {/* Hero Section */}
-      <section className="py-16 bg-gradient-to-br from-light-bg-primary to-light-bg-secondary dark:from-dark-bg-primary dark:to-dark-bg-secondary">
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Tax <span className="gradient-text">Refund Estimator</span>
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              Get a quick estimate of your federal tax refund using our free calculator.
-              Updated with 2024 tax brackets.
-            </p>
-          </div>
+      {/* Hero */}
+      <section className="relative py-16 bg-gradient-to-br from-brand-blue via-brand-blue-light to-brand-blue dark:from-brand-blue-dark dark:via-brand-blue dark:to-brand-blue-dark overflow-hidden">
+        <div className="absolute inset-0">
+          <motion.div className="absolute top-10 left-10 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl" animate={{ y: [0, 30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} />
+          <motion.div className="absolute bottom-10 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl" animate={{ y: [0, -30, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }} />
+        </div>
 
-          {/* Calculator */}
+        <div className="container-custom relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center mb-12">
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 text-white rounded-full text-sm font-semibold mb-6">
+              <Calculator weight="fill" className="w-4 h-4" />
+              Free Tax Tool
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              Tax <span className="text-brand-gold">Refund Estimator</span>
+            </h1>
+            <p className="text-xl text-white/90">
+              Get a quick estimate of your federal tax refund. Updated with 2024 tax brackets.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <path d="M0 48L60 56C120 64 240 80 360 80C480 80 600 64 720 56C840 48 960 48 1080 56C1200 64 1320 80 1380 88L1440 96V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V48Z" className="fill-gray-50 dark:fill-dark-bg-secondary" />
+          </svg>
+        </div>
+      </section>
+
+      {/* Calculator */}
+      <section className="py-12 bg-gray-50 dark:bg-dark-bg-secondary">
+        <div className="container-custom">
           <TaxCalculator />
         </div>
       </section>
 
-      {/* Tips Section */}
+      {/* Tips */}
       <section className="py-16 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-center gap-3 mb-6">
-              <Info weight="fill" className="w-6 h-6 text-light-accent-primary dark:text-dark-accent-primary" />
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-blue to-brand-gold flex items-center justify-center">
+                <Info weight="fill" className="w-6 h-6 text-white" />
+              </div>
               <h2 className="text-2xl font-bold">Tips for Accurate Estimates</h2>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
-              {tips.map((tip) => (
-                <div
-                  key={tip}
-                  className="flex items-start gap-3 p-4 bg-light-bg-secondary dark:bg-dark-bg-secondary rounded-lg"
-                >
-                  <CheckCircle
-                    weight="fill"
-                    className="w-5 h-5 text-light-success dark:text-dark-success flex-shrink-0 mt-0.5"
-                  />
-                  <span>{tip}</span>
-                </div>
+              {tips.map((tip, index) => (
+                <motion.div key={tip.text} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+                  <Card hover className="p-4 h-full">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                        <tip.icon weight="fill" className="w-5 h-5 text-green-600" />
+                      </div>
+                      <span className="font-medium">{tip.text}</span>
+                    </div>
+                  </Card>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-light-bg-secondary dark:bg-dark-bg-secondary">
+      {/* FAQ */}
+      <section className="py-16 bg-gray-50 dark:bg-dark-bg-secondary">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-12">
-              Frequently Asked <span className="gradient-text">Questions</span>
-            </h2>
-            <div className="space-y-6">
-              {faqs.map((faq) => (
-                <div
-                  key={faq.question}
-                  className="bg-white dark:bg-dark-bg-primary rounded-xl p-6"
-                >
-                  <h3 className="text-lg font-bold mb-2">{faq.question}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
-                </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-3xl mx-auto">
+            <div className="text-center mb-12">
+              <span className="inline-block px-4 py-2 bg-brand-gold/10 text-brand-gold rounded-full text-sm font-semibold mb-4">FAQ</span>
+              <h2 className="text-3xl font-bold">
+                Frequently Asked <span className="gradient-text">Questions</span>
+              </h2>
+            </div>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <motion.div key={faq.question} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+                  <Card hover className="p-6">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-brand-blue/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Question weight="bold" className="w-4 h-4 text-brand-blue" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold mb-2">{faq.question}</h3>
+                        <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-gradient-to-r from-brand-blue to-brand-blue-dark">
+        <div className="container-custom">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">Want an Even More Accurate Estimate?</h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              Our tax professionals can analyze your complete situation and maximize your refund.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/register">
+                <Button size="lg" className="bg-brand-gold hover:bg-brand-gold-dark text-white" rightIcon={<ArrowRight weight="bold" />}>
+                  Start Your Return
+                </Button>
+              </Link>
+              <Link href="/book-appointment">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" leftIcon={<Headset weight="bold" />}>
+                  Free Consultation
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -107,9 +147,7 @@ export default function RefundEstimatorPage() {
       <section className="py-8 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-3xl mx-auto">
-            This calculator provides estimates for informational purposes only and should not be
-            considered tax advice. Tax laws are complex and your actual tax situation may differ.
-            Consult with a qualified tax professional for accurate tax filing.
+            This calculator provides estimates for informational purposes only and should not be considered tax advice. Consult with a qualified tax professional for accurate tax filing.
           </p>
         </div>
       </section>
