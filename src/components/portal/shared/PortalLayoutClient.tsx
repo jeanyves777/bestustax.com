@@ -23,9 +23,10 @@ export default function PortalLayoutClient({
   const config = getPortalConfig(role)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary flex">
+    <div className="min-h-screen bg-gray-50 dark:bg-dark-bg-primary">
       <PortalSidebar config={config} user={user} />
-      <main className="flex-1 lg:pl-0 pt-16 lg:pt-0">
+      {/* Main content with left margin for fixed sidebar */}
+      <main className="lg:ml-64 min-h-screen pt-16 lg:pt-0">
         <div className="p-6 lg:p-8">{children}</div>
       </main>
     </div>

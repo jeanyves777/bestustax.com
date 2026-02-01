@@ -3,8 +3,6 @@ import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
 import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import AuthProvider from '@/components/providers/AuthProvider'
-import { Navbar } from '@/components/layout/Navbar'
-import { Footer } from '@/components/layout/Footer'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -100,9 +98,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            <main className="min-h-screen">{children}</main>
-            <Footer />
+            {children}
           </ThemeProvider>
         </AuthProvider>
       </body>

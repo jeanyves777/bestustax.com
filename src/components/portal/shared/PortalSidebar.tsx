@@ -115,57 +115,6 @@ export default function PortalSidebar({ config, user }: PortalSidebarProps) {
     )
   }
 
-  const SidebarContent = () => (
-    <>
-      {/* Logo & Portal Title */}
-      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-        <Link href={config.basePath} className="flex items-center gap-3">
-          <Image
-            src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
-            alt="BestUsTax"
-            width={120}
-            height={32}
-            priority
-          />
-        </Link>
-        <span className={cn('inline-block mt-2 text-xs px-2 py-0.5 rounded', config.badgeColor)}>
-          {config.title}
-        </span>
-      </div>
-
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto p-4">
-        <ul className="space-y-1">
-          {config.menuItems.map((item) => (
-            <li key={item.name}>{renderMenuItem(item)}</li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* User Info & Logout */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3 px-4 py-2 mb-2">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-accent-secondary flex items-center justify-center">
-            <span className="text-white text-sm font-medium">
-              {user.name?.charAt(0) || user.email?.charAt(0) || 'U'}
-            </span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{user.name || 'User'}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
-          </div>
-        </div>
-        <button
-          onClick={() => signOut({ callbackUrl: '/login' })}
-          className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
-        >
-          <SignOut className="w-5 h-5" />
-          Sign Out
-        </button>
-      </div>
-    </>
-  )
-
   return (
     <>
       {/* Mobile Toggle Button */}
@@ -186,14 +135,59 @@ export default function PortalSidebar({ config, user }: PortalSidebarProps) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Fixed on all screen sizes */}
       <aside
         className={cn(
-          'fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-dark-bg-secondary border-r border-gray-200 dark:border-gray-700 flex flex-col transition-transform lg:translate-x-0',
-          mobileOpen ? 'translate-x-0' : '-translate-x-full'
+          'fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-dark-bg-secondary border-r border-gray-200 dark:border-gray-700 flex flex-col transition-transform lg:translate-x-0',
+          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        <SidebarContent />
+        {/* Logo & Portal Title - Fixed Header */}
+        <div className="flex-shrink-0 p-4 border-b border-gray-200 dark:border-gray-700">
+          <Link href={config.basePath} className="flex items-center gap-3">
+            <Image
+              src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
+              alt="BestUsTax"
+              width={120}
+              height={32}
+              priority
+            />
+          </Link>
+          <span className={cn('inline-block mt-2 text-xs px-2 py-0.5 rounded', config.badgeColor)}>
+            {config.title}
+          </span>
+        </div>
+
+        {/* Navigation - Scrollable */}
+        <nav className="flex-1 overflow-y-auto p-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600">
+          <ul className="space-y-1">
+            {config.menuItems.map((item) => (
+              <li key={item.name}>{renderMenuItem(item)}</li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* User Info & Logout - Fixed Footer */}
+        <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center gap-3 px-2 py-2 mb-2">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-accent-secondary flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-sm font-medium">
+                {user.name?.charAt(0) || user.email?.charAt(0) || 'U'}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate">{user.name || 'User'}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user.email}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => signOut({ callbackUrl: '/login' })}
+            className="flex items-center gap-3 w-full px-4 py-2.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
+          >
+            <SignOut className="w-5 h-5" />
+            Sign Out
+          </button>
+        </div>
       </aside>
     </>
   )

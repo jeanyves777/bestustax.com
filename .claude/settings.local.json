@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh-keygen:*)",
+      "Bash(ssh root@82.180.139.117 \"mkdir -p ~/.ssh && chmod 700 ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys\")",
+      "Bash(ssh:*)",
+      "Bash(dir:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(where npm:*)",
+      "Bash(powershell.exe -Command \"cd ''c:\\\\Users\\\\koffi\\\\Dev\\\\bestustax.com''; npm run type-check\")",
+      "Bash(powershell.exe -Command \"Get-Command node -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source; $env:Path -split '';'' | Where-Object { $_ -like ''*node*'' }\")",
+      "Bash(cmd.exe /c \"cd /d c:\\\\Users\\\\koffi\\\\Dev\\\\bestustax.com && npm run type-check\")",
+      "Bash(/mnt/c/Program Files/nodejs/npm.cmd run type-check --prefix /mnt/c/Users/koffi/Dev/bestustax.com)",
+      "Bash(/c/Program Files/nodejs/npm.cmd run type-check --prefix /c/Users/koffi/Dev/bestustax.com)",
+      "Bash(cmd.exe //c \"npm run type-check\")",
+      "Bash(powershell.exe:*)",
+      "Bash(tr:*)",
+      "Bash(\"/c/Program Files/nodejs/npm\" run type-check --prefix \"c:/Users/koffi/Dev/bestustax.com\")",
+      "Bash(\"/c/Program Files/nodejs/npm\" install --prefix \"c:/Users/koffi/Dev/bestustax.com\")",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" \"/c/Program Files/nodejs/npm\" run type-check:*)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" \"/c/Program Files/nodejs/npm\" install:*)",
+      "Bash(\"/c/Program Files/nodejs/npx\" prisma generate)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" \"/c/Program Files/nodejs/npx\" prisma generate:*)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" \"/c/Program Files/nodejs/npm\" run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(nslookup:*)",
+      "WebFetch(domain:82.180.139.117)",
+      "Bash(npm run build:*)",
+      "Bash(powershell -Command \"cd c:/Users/koffi/Dev/bestustax.com; npm run build 2>&1 | Select-Object -First 100\")",
+      "Bash(powershell -Command \"where.exe node; where.exe npm\")",
+      "Bash(powershell -Command:*)",
+      "Bash(\"C:/Program Files/nodejs/npm.cmd\" run build)",
+      "Bash(cmd.exe /C \"set PATH=C:\\\\Program Files\\\\nodejs;%PATH% && cd /d c:\\\\Users\\\\koffi\\\\Dev\\\\bestustax.com && npm run build\")",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\")"
+    ]
+  }
+}
