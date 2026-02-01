@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
+import { sendEmail, getAppointmentConfirmationTemplate } from '@/lib/email'
 
 export async function POST(request: Request) {
   try {
@@ -37,7 +38,24 @@ export async function POST(request: Request) {
       },
     })
 
-    // TODO: Send confirmation email to client
+    // Send confirmation email to client
+    const formattedDate = appointment.date.toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    const emailTemplate = getAppointmentConfirmationTemplate(appointment.client.name || 'Valued Client', {
+      type: appointment.type,
+      date: formattedDate,
+      time: appointment.time,
+      location: appointment.location || 'BestUsTax Office, 123 Tax Street, Austin, TX 78701',
+    })
+    await sendEmail({
+      to: appointment.client.email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+    })
 
     return NextResponse.json({
       success: true,

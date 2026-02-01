@@ -28,6 +28,8 @@ model User {
   status            String    @default("active") // active, suspended, pending
   twoFactorEnabled  Boolean   @default(false)
   twoFactorSecret   String?
+  verificationToken String?
+  verificationExpires DateTime?
   image             String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt

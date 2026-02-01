@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
+import { sendEmail, getAppointmentBookedTemplate, getAdminNotificationTemplate } from '@/lib/email'
 
 export async function POST(request: Request) {
   try {
@@ -80,8 +81,42 @@ export async function POST(request: Request) {
       },
     })
 
-    // TODO: Send confirmation email with ICS calendar attachment
-    // TODO: Send notification to admin
+    // Send confirmation email to client
+    const formattedDate = new Date(date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    const emailTemplate = getAppointmentBookedTemplate(name, {
+      type,
+      date: formattedDate,
+      time,
+    })
+    await sendEmail({
+      to: email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+    })
+
+    // Send notification to admin
+    const adminEmail = process.env.ADMIN_EMAIL
+    if (adminEmail) {
+      const adminTemplate = getAdminNotificationTemplate('new_appointment', {
+        'Client Name': name,
+        'Client Email': email,
+        'Client Phone': phone,
+        Service: type,
+        Date: formattedDate,
+        Time: time,
+        Notes: notes || 'None',
+      })
+      await sendEmail({
+        to: adminEmail,
+        subject: adminTemplate.subject,
+        html: adminTemplate.html,
+      })
+    }
 
     return NextResponse.json(
       {

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
+import crypto from 'crypto'
 import prisma from '@/lib/prisma'
+import { sendEmail, getVerificationEmailTemplate, getAdminNotificationTemplate } from '@/lib/email'
 
 export async function POST(request: Request) {
   try {
@@ -47,6 +49,10 @@ export async function POST(request: Request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex')
+    const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+
     // Create user
     const user = await prisma.user.create({
       data: {
@@ -55,7 +61,9 @@ export async function POST(request: Request) {
         phone: phone || null,
         password: hashedPassword,
         role: 'client',
-        status: 'active',
+        status: 'pending',
+        verificationToken,
+        verificationExpires,
       },
     })
 
@@ -70,7 +78,30 @@ export async function POST(request: Request) {
       },
     })
 
-    // TODO: Send verification email
+    // Send verification email
+    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify?token=${verificationToken}`
+    const emailTemplate = getVerificationEmailTemplate(name, verificationUrl)
+    await sendEmail({
+      to: user.email,
+      subject: emailTemplate.subject,
+      html: emailTemplate.html,
+    })
+
+    // Notify admin of new registration
+    const adminEmail = process.env.ADMIN_EMAIL
+    if (adminEmail) {
+      const adminTemplate = getAdminNotificationTemplate('new_registration', {
+        Name: name,
+        Email: email,
+        Phone: phone || 'Not provided',
+        'Registered At': new Date().toLocaleString(),
+      })
+      await sendEmail({
+        to: adminEmail,
+        subject: adminTemplate.subject,
+        html: adminTemplate.html,
+      })
+    }
 
     return NextResponse.json(
       {

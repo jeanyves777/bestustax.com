@@ -2,6 +2,7 @@ import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import bcrypt from 'bcryptjs'
+import speakeasy from 'speakeasy'
 import prisma from './prisma'
 
 export const authOptions: NextAuthOptions = {
@@ -31,6 +32,10 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Your account has been suspended')
         }
 
+        if (user.status === 'pending') {
+          throw new Error('Please verify your email before logging in')
+        }
+
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
 
         if (!isPasswordValid) {
@@ -38,12 +43,19 @@ export const authOptions: NextAuthOptions = {
         }
 
         // Handle 2FA if enabled
-        if (user.twoFactorEnabled) {
+        if (user.twoFactorEnabled && user.twoFactorSecret) {
           if (!credentials.twoFactorCode) {
             throw new Error('2FA_REQUIRED')
           }
-          // Verify 2FA code here using speakeasy
-          // For now, skip 2FA verification
+          const verified = speakeasy.totp.verify({
+            secret: user.twoFactorSecret,
+            encoding: 'base32',
+            token: credentials.twoFactorCode,
+            window: 1,
+          })
+          if (!verified) {
+            throw new Error('Invalid 2FA code')
+          }
         }
 
         return {
@@ -70,8 +82,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id
-        (session.user as any).role = token.role
+        session.user.id = token.id as string
+        session.user.role = token.role as string
       }
       return session
     },
