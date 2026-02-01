@@ -77,13 +77,13 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
   const days = useMemo(() => generateCalendarDays(year, month), [year, month])
 
   return (
-    <div className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+    <div className="bg-white dark:bg-dark-bg-secondary rounded-2xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-sm">
       {/* Day headers */}
-      <div className="grid grid-cols-7 gap-2 mb-3">
+      <div className="grid grid-cols-7 gap-1 sm:gap-3 mb-4">
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}
-            className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400 py-2"
+            className="text-center text-sm sm:text-base font-semibold text-gray-500 dark:text-gray-400 py-2"
           >
             {day}
           </div>
@@ -91,7 +91,7 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
       </div>
 
       {/* Calendar days */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-7 gap-1 sm:gap-2">
         {days.map((day, index) => {
           const isDisabled = !day.isCurrentMonth || day.isPast || day.isWeekend
           const isSelected = day.dateString === selectedDate
@@ -103,12 +103,12 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
               onClick={() => !isDisabled && onSelectDate(day.dateString)}
               disabled={isDisabled}
               className={`
-                relative aspect-square flex items-center justify-center text-sm font-medium rounded-lg transition-all
+                relative w-full aspect-square flex items-center justify-center text-base sm:text-lg font-medium rounded-xl transition-all
                 ${!day.isCurrentMonth ? 'text-gray-300 dark:text-gray-600' : ''}
                 ${day.isCurrentMonth && !isDisabled ? 'text-gray-900 dark:text-white hover:bg-light-accent-primary/10 hover:scale-105' : ''}
                 ${day.isPast && day.isCurrentMonth ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
                 ${day.isWeekend && day.isCurrentMonth && !day.isPast ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
-                ${isSelected ? 'bg-light-accent-primary text-white hover:bg-light-accent-primary font-bold shadow-md scale-105' : ''}
+                ${isSelected ? 'bg-light-accent-primary text-white hover:bg-light-accent-primary font-bold shadow-lg scale-105' : ''}
                 ${day.isToday && !isSelected ? 'ring-2 ring-light-accent-primary ring-inset font-bold' : ''}
               `}
             >
@@ -376,31 +376,31 @@ export default function BookAppointmentPage() {
                   </h2>
 
                   {/* Single Month Calendar with Navigation */}
-                  <div className="max-w-md mx-auto mb-8">
+                  <div className="max-w-xl mx-auto mb-8">
                     {/* Calendar Navigation */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between mb-6">
                       <button
                         type="button"
                         onClick={goToPreviousMonth}
                         disabled={calendarOffset === 0}
-                        className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                        className={`flex items-center justify-center w-12 h-12 rounded-full transition-all ${
                           calendarOffset === 0
                             ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                             : 'text-gray-600 dark:text-gray-400 hover:bg-light-accent-primary/10 hover:text-light-accent-primary'
                         }`}
                       >
-                        <CaretLeft weight="bold" className="w-6 h-6" />
+                        <CaretLeft weight="bold" className="w-7 h-7" />
                       </button>
 
                       <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                           {MONTHS[currentCalendarMonth.month]} {currentCalendarMonth.year}
                         </h3>
                         {calendarOffset !== 0 && (
                           <button
                             type="button"
                             onClick={goToToday}
-                            className="px-3 py-1 text-xs font-medium bg-light-accent-primary/10 text-light-accent-primary rounded-full hover:bg-light-accent-primary/20 transition-colors"
+                            className="px-4 py-1.5 text-sm font-medium bg-light-accent-primary/10 text-light-accent-primary rounded-full hover:bg-light-accent-primary/20 transition-colors"
                           >
                             Today
                           </button>
@@ -411,28 +411,28 @@ export default function BookAppointmentPage() {
                         type="button"
                         onClick={goToNextMonth}
                         disabled={calendarOffset >= 11}
-                        className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                        className={`flex items-center justify-center w-12 h-12 rounded-full transition-all ${
                           calendarOffset >= 11
                             ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
                             : 'text-gray-600 dark:text-gray-400 hover:bg-light-accent-primary/10 hover:text-light-accent-primary'
                         }`}
                       >
-                        <CaretRight weight="bold" className="w-6 h-6" />
+                        <CaretRight weight="bold" className="w-7 h-7" />
                       </button>
                     </div>
 
                     {/* Calendar Legend */}
-                    <div className="flex flex-wrap justify-center gap-4 mb-4 text-xs">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-light-accent-primary"></div>
+                    <div className="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-lg bg-light-accent-primary"></div>
                         <span className="text-gray-600 dark:text-gray-400">Selected</span>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded ring-2 ring-light-accent-primary ring-inset"></div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-lg ring-2 ring-light-accent-primary ring-inset"></div>
                         <span className="text-gray-600 dark:text-gray-400">Today</span>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700"></div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-lg bg-gray-200 dark:bg-gray-700"></div>
                         <span className="text-gray-600 dark:text-gray-400">Unavailable</span>
                       </div>
                     </div>
