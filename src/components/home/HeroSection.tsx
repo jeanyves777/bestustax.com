@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { ArrowRight, CheckCircle, TrendUp } from '@phosphor-icons/react'
+import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { FloatingNumbers } from '@/components/animations/FloatingNumbers'
 
@@ -102,12 +103,16 @@ export function HeroSection() {
               transition={{ delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
-              <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
-                Start Your Tax Return
-              </Button>
-              <Button size="xl" variant="outline">
-                Calculate Your Refund
-              </Button>
+              <Link href="/register">
+                <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
+                  Start Your Tax Return
+                </Button>
+              </Link>
+              <Link href="/tools/refund-estimator">
+                <Button size="xl" variant="outline">
+                  Calculate Your Refund
+                </Button>
+              </Link>
             </motion.div>
 
             {/* Trust Indicators */}

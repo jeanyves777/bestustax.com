@@ -221,16 +221,20 @@ export function Navbar() {
           {/* Right Section */}
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:inline-flex"
-            >
-              Client Login
-            </Button>
-            <Button size="sm" glow className="hidden md:inline-flex">
-              Get Started
-            </Button>
+            <Link href="/login">
+              <Button
+                variant="outline"
+                size="sm"
+                className="hidden md:inline-flex"
+              >
+                Client Login
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" glow className="hidden md:inline-flex">
+                Get Started
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <button
@@ -284,12 +288,16 @@ export function Navbar() {
                 </div>
               ))}
               <div className="pt-4 space-y-2">
-                <Button variant="outline" className="w-full">
-                  Client Login
-                </Button>
-                <Button className="w-full" glow>
-                  Get Started
-                </Button>
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    Client Login
+                  </Button>
+                </Link>
+                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full" glow>
+                    Get Started
+                  </Button>
+                </Link>
               </div>
             </div>
           </motion.div>
