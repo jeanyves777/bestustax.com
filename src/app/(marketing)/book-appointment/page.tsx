@@ -131,6 +131,7 @@ export default function BookAppointmentPage() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
   const [bookedSlots, setBookedSlots] = useState<string[]>([])
+  const [calendarOffset, setCalendarOffset] = useState(0) // Offset in months from current month
 
   const [formData, setFormData] = useState({
     serviceType: '',
@@ -143,16 +144,33 @@ export default function BookAppointmentPage() {
     honeypot: '', // Anti-bot field
   })
 
-  // Calculate the 3 months to display
+  // Calculate the 3 months to display based on offset
   const calendarMonths = useMemo(() => {
     const today = new Date()
     const months = []
     for (let i = 0; i < 3; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() + i, 1)
+      const date = new Date(today.getFullYear(), today.getMonth() + calendarOffset + i, 1)
       months.push({ year: date.getFullYear(), month: date.getMonth() })
     }
     return months
-  }, [])
+  }, [calendarOffset])
+
+  // Navigation functions
+  const goToPreviousMonths = () => {
+    if (calendarOffset > 0) {
+      setCalendarOffset(calendarOffset - 3)
+    }
+  }
+
+  const goToNextMonths = () => {
+    if (calendarOffset < 9) { // Allow up to 12 months ahead
+      setCalendarOffset(calendarOffset + 3)
+    }
+  }
+
+  const goToToday = () => {
+    setCalendarOffset(0)
+  }
 
   useEffect(() => {
     if (formData.date) {
@@ -364,6 +382,52 @@ export default function BookAppointmentPage() {
                     <Clock weight="fill" className="w-6 h-6 text-light-accent-primary" />
                     Select Date & Time
                   </h2>
+
+                  {/* Calendar Navigation */}
+                  <div className="flex items-center justify-between mb-6">
+                    <button
+                      type="button"
+                      onClick={goToPreviousMonths}
+                      disabled={calendarOffset === 0}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
+                        calendarOffset === 0
+                          ? 'border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-light-accent-primary hover:text-light-accent-primary'
+                      }`}
+                    >
+                      <CaretLeft weight="bold" className="w-5 h-5" />
+                      <span className="hidden sm:inline">Previous</span>
+                    </button>
+
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                        {MONTHS[calendarMonths[0].month]} - {MONTHS[calendarMonths[2].month]} {calendarMonths[2].year}
+                      </span>
+                      {calendarOffset !== 0 && (
+                        <button
+                          type="button"
+                          onClick={goToToday}
+                          className="px-3 py-1 text-xs font-medium bg-light-accent-primary/10 text-light-accent-primary rounded-full hover:bg-light-accent-primary/20 transition-colors"
+                        >
+                          Today
+                        </button>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={goToNextMonths}
+                      disabled={calendarOffset >= 9}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
+                        calendarOffset >= 9
+                          ? 'border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-light-accent-primary hover:text-light-accent-primary'
+                      }`}
+                    >
+                      <span className="hidden sm:inline">Next</span>
+                      <CaretRight weight="bold" className="w-5 h-5" />
+                    </button>
+                  </div>
 
                   {/* Calendar Legend */}
                   <div className="flex flex-wrap gap-4 mb-6 text-sm">
