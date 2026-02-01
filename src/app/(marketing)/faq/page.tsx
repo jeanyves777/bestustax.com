@@ -9,7 +9,6 @@ import {
   Calculator,
   FileText,
   Clock,
-  CurrencyDollar,
   Shield,
   Users,
   Headset
@@ -29,7 +28,6 @@ interface FAQ {
 const categories = [
   { id: 'all', label: 'All Questions', icon: Question },
   { id: 'filing', label: 'Tax Filing', icon: FileText },
-  { id: 'pricing', label: 'Pricing & Payments', icon: CurrencyDollar },
   { id: 'deadlines', label: 'Deadlines', icon: Clock },
   { id: 'refunds', label: 'Refunds', icon: Calculator },
   { id: 'security', label: 'Security', icon: Shield },
@@ -85,41 +83,6 @@ Once we have all your documents, our advisors work efficiently to prepare your r
 • Received corrected W-2 or 1099 forms
 
 Our advisors will review your situation and determine if an amendment is beneficial.`,
-  },
-
-  // Pricing & Payments
-  {
-    id: '5',
-    category: 'pricing',
-    question: 'How much does your tax preparation service cost?',
-    answer: `Our pricing is transparent and based on the complexity of your return:
-
-• Basic (W-2 income only): Starting at $99
-• Standard (multiple income sources): Starting at $199
-• Premium (self-employed/business): Starting at $349
-
-All packages include unlimited advisor support, accuracy guarantee, and audit protection. No hidden fees - the price quoted is what you pay.`,
-  },
-  {
-    id: '6',
-    category: 'pricing',
-    question: 'Do you offer payment plans?',
-    answer: `Yes! We offer flexible payment options:
-
-• Pay from your refund - no upfront cost
-• Split payments over 3 months
-• Credit/debit card payment
-• Bank transfer
-
-There are no interest charges on our payment plans when you pay from your refund.`,
-  },
-  {
-    id: '7',
-    category: 'pricing',
-    question: 'What is your refund guarantee?',
-    answer: `We offer a Maximum Refund Guarantee - if you get a larger refund or smaller tax due from another tax preparation method using the same data, we'll refund your preparation fees AND pay you the difference, up to $100.
-
-We're confident in our expertise and thoroughness in finding every deduction and credit you're entitled to.`,
   },
 
   // Deadlines

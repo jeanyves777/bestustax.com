@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
-import { CheckCircle, ArrowRight, BookOpen, ChartBar, Receipt, CloudArrowUp } from '@phosphor-icons/react/dist/ssr'
+import { CheckCircle, ArrowRight, BookOpen, ChartBar, Receipt, CloudArrowUp, Calendar } from '@phosphor-icons/react/dist/ssr'
 import Button from '@/components/ui/Button'
-import Card, { CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
+import Card from '@/components/ui/Card'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Bookkeeping Services | BestUsTax',
@@ -43,54 +44,6 @@ const features = [
   '1099 preparation',
 ]
 
-const pricingTiers = [
-  {
-    name: 'Starter',
-    price: '$199',
-    per: '/month',
-    description: 'For new businesses',
-    transactions: 'Up to 100 transactions',
-    features: [
-      'Monthly bookkeeping',
-      'Bank reconciliation',
-      'Basic financial reports',
-      'Email support',
-      'QuickBooks Online access',
-    ],
-  },
-  {
-    name: 'Growth',
-    price: '$399',
-    per: '/month',
-    description: 'For growing businesses',
-    transactions: 'Up to 300 transactions',
-    features: [
-      'Everything in Starter',
-      'Accounts payable/receivable',
-      'Expense categorization',
-      'Monthly financial review call',
-      'Priority support',
-      'Cash flow forecasting',
-    ],
-    popular: true,
-  },
-  {
-    name: 'Enterprise',
-    price: '$799',
-    per: '/month',
-    description: 'For established businesses',
-    transactions: 'Unlimited transactions',
-    features: [
-      'Everything in Growth',
-      'Dedicated bookkeeper',
-      'Payroll processing',
-      'Weekly reporting',
-      'Multi-entity support',
-      'Controller oversight',
-    ],
-  },
-]
-
 const benefits = [
   { value: '10+', label: 'Hours Saved Weekly', description: 'Focus on growing your business' },
   { value: '99.9%', label: 'Accuracy Rate', description: 'Error-free financial records' },
@@ -126,12 +79,16 @@ export default function BookkeepingPage() {
               Focus on growing your business while we handle the numbers.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
-                Start Free Trial
-              </Button>
-              <Button size="xl" variant="outline">
-                See Pricing
-              </Button>
+              <Link href="/book-appointment">
+                <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
+                  Book Free Consultation
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button size="xl" variant="outline">
+                  Contact Us
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -223,64 +180,24 @@ export default function BookkeepingPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Book Appointment Section */}
       <section className="py-24 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
-          <h2 className="text-4xl font-bold text-center mb-4">
-            Simple, Predictable <span className="gradient-text">Pricing</span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-            Monthly plans that scale with your business. No hidden fees.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {pricingTiers.map((tier) => (
-              <Card
-                key={tier.name}
-                variant={tier.popular ? 'bordered' : 'default'}
-                className={tier.popular ? 'relative' : ''}
-              >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success rounded-full text-white text-sm font-bold">
-                    Most Popular
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle>{tier.name}</CardTitle>
-                  <div className="mt-4">
-                    <span className="text-4xl font-bold gradient-text">{tier.price}</span>
-                    <span className="text-gray-600 dark:text-gray-400">{tier.per}</span>
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    {tier.description}
-                  </p>
-                  <p className="text-sm font-medium text-light-accent-primary dark:text-dark-accent-primary mt-2">
-                    {tier.transactions}
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {tier.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <CheckCircle
-                          weight="fill"
-                          className="w-5 h-5 text-light-success dark:text-dark-success flex-shrink-0 mt-0.5"
-                        />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    variant={tier.popular ? 'primary' : 'outline'}
-                    glow={tier.popular}
-                    className="w-full"
-                  >
-                    Start Free Trial
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="max-w-4xl mx-auto p-8 md:p-12 text-center bg-gradient-to-r from-light-accent-primary/10 to-light-success/10">
+            <Calendar weight="fill" className="w-16 h-16 mx-auto text-light-accent-primary dark:text-dark-accent-primary mb-4" />
+            <h2 className="text-3xl font-bold mb-4">
+              Schedule Your Free Bookkeeping Consultation
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+              Book a free appointment to discuss your bookkeeping needs. We'll analyze your
+              situation and create a customized plan for your business.
+            </p>
+            <Link href="/book-appointment">
+              <Button size="lg" glow rightIcon={<ArrowRight weight="bold" />}>
+                Book Appointment Now
+              </Button>
+            </Link>
+          </Card>
         </div>
       </section>
 
@@ -291,16 +208,28 @@ export default function BookkeepingPage() {
             Ready to Get Your Books in Order?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Start your free 14-day trial today. No credit card required.
-            See how clean books can transform your business.
+            Schedule a free consultation and see how clean books can transform your business.
           </p>
-          <Button
-            size="xl"
-            variant="secondary"
-            className="bg-white text-light-accent-primary hover:bg-gray-100"
-          >
-            Start Free 14-Day Trial
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/book-appointment">
+              <Button
+                size="xl"
+                variant="secondary"
+                className="bg-white text-light-accent-primary hover:bg-gray-100"
+              >
+                Book Free Consultation
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button
+                size="xl"
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Contact Us
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

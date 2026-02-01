@@ -103,9 +103,9 @@ export function HeroSection() {
               transition={{ delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
-              <Link href="/register">
+              <Link href="/book-appointment">
                 <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
-                  Start Your Tax Return
+                  Book Free Consultation
                 </Button>
               </Link>
               <Link href="/tools/refund-estimator">

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { CheckCircle, ArrowRight, Users, Medal, ShieldCheck, Heart } from '@phosphor-icons/react/dist/ssr'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'About Us | BestUsTax',
@@ -268,23 +269,28 @@ export default function AboutPage() {
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Join the 50,000+ clients who trust us with their taxes every year.
+            Schedule a free consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="xl"
-              variant="secondary"
-              className="bg-white text-light-accent-primary hover:bg-gray-100"
-              rightIcon={<ArrowRight weight="bold" />}
-            >
-              Start Your Tax Return
-            </Button>
-            <Button
-              size="xl"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10"
-            >
-              Contact Us
-            </Button>
+            <Link href="/book-appointment">
+              <Button
+                size="xl"
+                variant="secondary"
+                className="bg-white text-light-accent-primary hover:bg-gray-100"
+                rightIcon={<ArrowRight weight="bold" />}
+              >
+                Book Free Consultation
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button
+                size="xl"
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Contact Us
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

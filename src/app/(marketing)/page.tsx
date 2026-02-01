@@ -1,6 +1,7 @@
 import { HeroSection } from '@/components/home/HeroSection'
 import { ServicesSection } from '@/components/home/ServicesSection'
 import { TaxCalculator } from '@/components/calculators/TaxCalculator'
+import Link from 'next/link'
 
 export default function HomePage() {
   return (
@@ -75,16 +76,20 @@ export default function HomePage() {
             Ready to Maximize Your Tax Refund?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Start your tax return today and join thousands of satisfied clients
-            who trust BestUSTax for their tax needs.
+            Schedule a free consultation with our tax experts and discover how we can help
+            you get the maximum refund you deserve.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-brand-gold text-white rounded-lg font-bold text-lg hover:bg-brand-gold-dark transition-colors shadow-lg">
-              Start Your Tax Return
-            </button>
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors">
-              Schedule Consultation
-            </button>
+            <Link href="/book-appointment">
+              <button className="px-8 py-4 bg-brand-gold text-white rounded-lg font-bold text-lg hover:bg-brand-gold-dark transition-colors shadow-lg">
+                Book Free Consultation
+              </button>
+            </Link>
+            <Link href="/contact">
+              <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-bold text-lg hover:bg-white/10 transition-colors">
+                Contact Us
+              </button>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
-import { CheckCircle, ArrowRight, ShieldCheck, Warning, FileText, UsersFour } from '@phosphor-icons/react/dist/ssr'
+import { CheckCircle, ArrowRight, ShieldCheck, Warning, FileText, UsersFour, Calendar } from '@phosphor-icons/react/dist/ssr'
 import Button from '@/components/ui/Button'
-import Card, { CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
+import Card from '@/components/ui/Card'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'IRS Audit Support & Representation | BestUsTax',
@@ -64,48 +65,6 @@ const process = [
   },
 ]
 
-const pricingTiers = [
-  {
-    name: 'Correspondence',
-    price: '$399',
-    description: 'For mail-based audits',
-    features: [
-      'IRS notice review',
-      'Document organization',
-      'Response letter drafting',
-      'Follow-up correspondence',
-      'Email support',
-    ],
-  },
-  {
-    name: 'Full Representation',
-    price: '$1,999',
-    description: 'Complete audit defense',
-    features: [
-      'Everything in Correspondence',
-      'Power of Attorney filing',
-      'Direct IRS communication',
-      'Office/field audit attendance',
-      'Negotiation & settlement',
-      'Dedicated case manager',
-    ],
-    popular: true,
-  },
-  {
-    name: 'Complex Cases',
-    price: 'Custom',
-    description: 'Business & multi-year audits',
-    features: [
-      'Everything in Full Rep',
-      'Multi-year examination',
-      'Business entity audits',
-      'Criminal referral defense',
-      'Appeals representation',
-      'Tax court preparation',
-    ],
-  },
-]
-
 const stats = [
   { value: '95%', label: 'Success Rate' },
   { value: '2,500+', label: 'Audits Resolved' },
@@ -132,12 +91,16 @@ export default function AuditSupportPage() {
               expert representation to protect your rights and resolve your case.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
-                Get Free Case Review
-              </Button>
-              <Button size="xl" variant="outline">
-                Call Now: (800) 555-1234
-              </Button>
+              <Link href="/book-appointment">
+                <Button size="xl" glow rightIcon={<ArrowRight weight="bold" />}>
+                  Book Free Case Review
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button size="xl" variant="outline">
+                  Contact Us
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -254,60 +217,24 @@ export default function AuditSupportPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
+      {/* Book Appointment Section */}
       <section className="py-24 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
-          <h2 className="text-4xl font-bold text-center mb-4">
-            Audit Defense <span className="gradient-text">Pricing</span>
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-            Clear, upfront pricing with no surprises. Free initial consultation.
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {pricingTiers.map((tier) => (
-              <Card
-                key={tier.name}
-                variant={tier.popular ? 'bordered' : 'default'}
-                className={tier.popular ? 'relative' : ''}
-              >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success rounded-full text-white text-sm font-bold">
-                    Most Popular
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle>{tier.name}</CardTitle>
-                  <div className="text-4xl font-bold gradient-text mt-4">
-                    {tier.price}
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 mt-2">
-                    {tier.description}
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {tier.features.map((feature) => (
-                      <li key={feature} className="flex items-start gap-2">
-                        <CheckCircle
-                          weight="fill"
-                          className="w-5 h-5 text-light-success dark:text-dark-success flex-shrink-0 mt-0.5"
-                        />
-                        <span className="text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    variant={tier.popular ? 'primary' : 'outline'}
-                    glow={tier.popular}
-                    className="w-full"
-                  >
-                    Get Free Consultation
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="max-w-4xl mx-auto p-8 md:p-12 text-center bg-gradient-to-r from-light-accent-primary/10 to-light-success/10">
+            <Calendar weight="fill" className="w-16 h-16 mx-auto text-light-accent-primary dark:text-dark-accent-primary mb-4" />
+            <h2 className="text-3xl font-bold mb-4">
+              Get Your Free Case Review
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-2xl mx-auto">
+              Don't wait to respond to an IRS notice. Book a free consultation with our
+              audit defense experts to understand your options and protect your rights.
+            </p>
+            <Link href="/book-appointment">
+              <Button size="lg" glow rightIcon={<ArrowRight weight="bold" />}>
+                Book Free Consultation
+              </Button>
+            </Link>
+          </Card>
         </div>
       </section>
 
@@ -322,21 +249,25 @@ export default function AuditSupportPage() {
             Get a free case review and protect your rights.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="xl"
-              variant="secondary"
-              className="bg-white text-light-accent-primary hover:bg-gray-100"
-            >
-              Get Free Case Review
-            </Button>
-            <Button
-              size="xl"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10"
-            >
-              <UsersFour weight="fill" className="w-5 h-5 mr-2" />
-              Speak to an Expert
-            </Button>
+            <Link href="/book-appointment">
+              <Button
+                size="xl"
+                variant="secondary"
+                className="bg-white text-light-accent-primary hover:bg-gray-100"
+              >
+                Book Free Case Review
+              </Button>
+            </Link>
+            <Link href="/contact">
+              <Button
+                size="xl"
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                <UsersFour weight="fill" className="w-5 h-5 mr-2" />
+                Contact Us
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
