@@ -4,6 +4,8 @@ import { useState, Suspense } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useTheme } from 'next-themes'
 import { Eye, EyeSlash, SignIn, SpinnerGap } from '@phosphor-icons/react'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -11,6 +13,7 @@ import Input from '@/components/ui/Input'
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { theme } = useTheme()
   const callbackUrl = searchParams.get('callbackUrl') || '/portal'
 
   const [email, setEmail] = useState('')
@@ -57,13 +60,14 @@ function LoginForm() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success flex items-center justify-center">
-              <span className="text-white font-bold text-xl">BU</span>
-            </div>
-            <span className="text-2xl font-bold">
-              Best<span className="gradient-text">UsTax</span>
-            </span>
+          <Link href="/" className="inline-block">
+            <Image
+              src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
+              alt="BestUsTax"
+              width={180}
+              height={50}
+              priority
+            />
           </Link>
         </div>
 

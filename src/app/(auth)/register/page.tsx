@@ -3,12 +3,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useTheme } from 'next-themes'
 import { Eye, EyeSlash, UserPlus, SpinnerGap, CheckCircle } from '@phosphor-icons/react'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { theme } = useTheme()
 
   const [formData, setFormData] = useState({
     name: '',
@@ -105,13 +108,14 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success flex items-center justify-center">
-              <span className="text-white font-bold text-xl">BU</span>
-            </div>
-            <span className="text-2xl font-bold">
-              Best<span className="gradient-text">UsTax</span>
-            </span>
+          <Link href="/" className="inline-block">
+            <Image
+              src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
+              alt="BestUsTax"
+              width={180}
+              height={50}
+              priority
+            />
           </Link>
         </div>
 
