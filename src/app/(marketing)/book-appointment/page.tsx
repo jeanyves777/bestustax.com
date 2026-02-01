@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
-import { Calendar, Clock, User, EnvelopeSimple, Phone, CheckCircle, SpinnerGap, Warning } from '@phosphor-icons/react'
+import { Calendar, Clock, User, EnvelopeSimple, Phone, CheckCircle, SpinnerGap, Warning, CaretLeft, CaretRight } from '@phosphor-icons/react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -22,6 +22,109 @@ const timeSlots = [
   '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM',
 ]
 
+const DAYS_OF_WEEK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+interface CalendarDay {
+  date: Date
+  day: number
+  isCurrentMonth: boolean
+  isToday: boolean
+  isPast: boolean
+  isWeekend: boolean
+  dateString: string
+}
+
+function generateCalendarDays(year: number, month: number): CalendarDay[] {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const firstDay = new Date(year, month, 1)
+  const lastDay = new Date(year, month + 1, 0)
+  const startDate = new Date(firstDay)
+  startDate.setDate(startDate.getDate() - firstDay.getDay())
+
+  const days: CalendarDay[] = []
+  const current = new Date(startDate)
+
+  // Generate 42 days (6 weeks) to fill the calendar grid
+  for (let i = 0; i < 42; i++) {
+    const date = new Date(current)
+    const dayOfWeek = date.getDay()
+    days.push({
+      date,
+      day: date.getDate(),
+      isCurrentMonth: date.getMonth() === month,
+      isToday: date.toDateString() === today.toDateString(),
+      isPast: date <= today,
+      isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
+      dateString: date.toISOString().split('T')[0],
+    })
+    current.setDate(current.getDate() + 1)
+  }
+
+  return days
+}
+
+interface MonthCalendarProps {
+  year: number
+  month: number
+  selectedDate: string
+  onSelectDate: (dateString: string) => void
+}
+
+function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalendarProps) {
+  const days = useMemo(() => generateCalendarDays(year, month), [year, month])
+
+  return (
+    <div className="bg-white dark:bg-dark-bg-secondary rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+      <h3 className="text-lg font-semibold text-center mb-4 text-gray-900 dark:text-white">
+        {MONTHS[month]} {year}
+      </h3>
+
+      {/* Day headers */}
+      <div className="grid grid-cols-7 gap-1 mb-2">
+        {DAYS_OF_WEEK.map((day) => (
+          <div
+            key={day}
+            className="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2"
+          >
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar days */}
+      <div className="grid grid-cols-7 gap-1">
+        {days.map((day, index) => {
+          const isDisabled = !day.isCurrentMonth || day.isPast || day.isWeekend
+          const isSelected = day.dateString === selectedDate
+
+          return (
+            <button
+              key={index}
+              type="button"
+              onClick={() => !isDisabled && onSelectDate(day.dateString)}
+              disabled={isDisabled}
+              className={`
+                relative aspect-square flex items-center justify-center text-sm rounded-lg transition-all
+                ${!day.isCurrentMonth ? 'text-gray-300 dark:text-gray-600' : ''}
+                ${day.isCurrentMonth && !isDisabled ? 'text-gray-900 dark:text-white hover:bg-light-accent-primary/10' : ''}
+                ${day.isPast && day.isCurrentMonth ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
+                ${day.isWeekend && day.isCurrentMonth && !day.isPast ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
+                ${isSelected ? 'bg-light-accent-primary text-white hover:bg-light-accent-primary font-semibold' : ''}
+                ${day.isToday && !isSelected ? 'ring-2 ring-light-accent-primary ring-inset' : ''}
+              `}
+            >
+              {day.day}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function BookAppointmentPage() {
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -39,6 +142,17 @@ export default function BookAppointmentPage() {
     notes: '',
     honeypot: '', // Anti-bot field
   })
+
+  // Calculate the 3 months to display
+  const calendarMonths = useMemo(() => {
+    const today = new Date()
+    const months = []
+    for (let i = 0; i < 3; i++) {
+      const date = new Date(today.getFullYear(), today.getMonth() + i, 1)
+      months.push({ year: date.getFullYear(), month: date.getMonth() })
+    }
+    return months
+  }, [])
 
   useEffect(() => {
     if (formData.date) {
@@ -96,16 +210,9 @@ export default function BookAppointmentPage() {
     }
   }
 
-  const getMinDate = () => {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
-    return tomorrow.toISOString().split('T')[0]
-  }
-
-  const isWeekend = (dateString: string) => {
-    const date = new Date(dateString)
-    const day = date.getDay()
-    return day === 0 || day === 6
+  const handleDateSelect = (dateString: string) => {
+    setFormData({ ...formData, date: dateString, time: '' })
+    setError('')
   }
 
   if (success) {
@@ -158,7 +265,7 @@ export default function BookAppointmentPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-light-bg-primary to-light-bg-secondary dark:from-dark-bg-primary dark:to-dark-bg-secondary py-16">
       <div className="container-custom">
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-flex items-center gap-2 mb-6">
@@ -258,53 +365,78 @@ export default function BookAppointmentPage() {
                     Select Date & Time
                   </h2>
 
-                  <div className="mb-6">
-                    <Input
-                      label="Select Date"
-                      type="date"
-                      value={formData.date}
-                      onChange={(e) => {
-                        const date = e.target.value
-                        if (isWeekend(date)) {
-                          setError('We are closed on weekends. Please select a weekday.')
-                          return
-                        }
-                        setError('')
-                        setFormData({ ...formData, date, time: '' })
-                      }}
-                      min={getMinDate()}
-                      required
-                    />
+                  {/* Calendar Legend */}
+                  <div className="flex flex-wrap gap-4 mb-6 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-light-accent-primary"></div>
+                      <span className="text-gray-600 dark:text-gray-400">Selected</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded ring-2 ring-light-accent-primary ring-inset"></div>
+                      <span className="text-gray-600 dark:text-gray-400">Today</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-gray-100 dark:bg-gray-700"></div>
+                      <span className="text-gray-600 dark:text-gray-400">Unavailable</span>
+                    </div>
                   </div>
 
-                  {formData.date && !isWeekend(formData.date) && (
-                    <div>
-                      <label className="block text-sm font-medium mb-3">Select Time</label>
-                      <div className="grid grid-cols-4 gap-2">
+                  {/* 3-Month Calendar Grid */}
+                  <div className="grid md:grid-cols-3 gap-4 mb-8">
+                    {calendarMonths.map(({ year, month }) => (
+                      <MonthCalendar
+                        key={`${year}-${month}`}
+                        year={year}
+                        month={month}
+                        selectedDate={formData.date}
+                        onSelectDate={handleDateSelect}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Time Slots */}
+                  {formData.date && (
+                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                      <h3 className="text-lg font-semibold mb-4">
+                        Available Times for {new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                      </h3>
+                      <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
                         {timeSlots.map((time) => {
                           const isBooked = bookedSlots.includes(time)
+                          const isSelected = formData.time === time
                           return (
                             <button
                               key={time}
                               type="button"
                               onClick={() => !isBooked && setFormData({ ...formData, time })}
                               disabled={isBooked}
-                              className={`px-3 py-2 text-sm rounded-lg border transition-colors ${
-                                formData.time === time
-                                  ? 'border-light-accent-primary bg-light-accent-primary text-white'
+                              className={`
+                                px-3 py-2.5 text-sm rounded-lg border transition-all font-medium
+                                ${isSelected
+                                  ? 'border-light-accent-primary bg-light-accent-primary text-white shadow-md'
                                   : isBooked
-                                  ? 'border-red-200 bg-red-50 text-red-400 cursor-not-allowed'
-                                  : 'border-gray-200 dark:border-gray-700 hover:border-light-accent-primary'
-                              }`}
+                                  ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-400 dark:text-red-500 cursor-not-allowed line-through'
+                                  : 'border-gray-200 dark:border-gray-700 hover:border-light-accent-primary hover:bg-light-accent-primary/5'
+                                }
+                              `}
                             >
                               {time}
-                              {isBooked && (
-                                <span className="block text-xs">Booked</span>
-                              )}
                             </button>
                           )
                         })}
                       </div>
+                      {bookedSlots.length > 0 && (
+                        <p className="mt-3 text-sm text-gray-500">
+                          Crossed out times are already booked
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {!formData.date && (
+                    <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                      <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                      <p>Select a date from the calendar to see available time slots</p>
                     </div>
                   )}
 
@@ -325,7 +457,7 @@ export default function BookAppointmentPage() {
 
               {/* Step 3: Contact Information */}
               {step === 3 && (
-                <div>
+                <div className="max-w-2xl mx-auto">
                   <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                     <User weight="fill" className="w-6 h-6 text-light-accent-primary" />
                     Your Information
@@ -381,7 +513,7 @@ export default function BookAppointmentPage() {
                         {serviceTypes.find((s) => s.value === formData.serviceType)?.label}
                       </p>
                       <p>
-                        <strong>Date:</strong> {new Date(formData.date).toLocaleDateString()}
+                        <strong>Date:</strong> {new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
                       </p>
                       <p>
                         <strong>Time:</strong> {formData.time}
