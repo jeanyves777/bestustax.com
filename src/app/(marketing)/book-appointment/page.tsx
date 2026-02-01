@@ -77,17 +77,13 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
   const days = useMemo(() => generateCalendarDays(year, month), [year, month])
 
   return (
-    <div className="bg-white dark:bg-dark-bg-secondary rounded-xl p-4 border border-gray-200 dark:border-gray-700">
-      <h3 className="text-lg font-semibold text-center mb-4 text-gray-900 dark:text-white">
-        {MONTHS[month]} {year}
-      </h3>
-
+    <div className="bg-white dark:bg-dark-bg-secondary rounded-xl p-6 border border-gray-200 dark:border-gray-700">
       {/* Day headers */}
-      <div className="grid grid-cols-7 gap-1 mb-2">
+      <div className="grid grid-cols-7 gap-2 mb-3">
         {DAYS_OF_WEEK.map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-gray-500 dark:text-gray-400 py-2"
+            className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400 py-2"
           >
             {day}
           </div>
@@ -95,7 +91,7 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
       </div>
 
       {/* Calendar days */}
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-2">
         {days.map((day, index) => {
           const isDisabled = !day.isCurrentMonth || day.isPast || day.isWeekend
           const isSelected = day.dateString === selectedDate
@@ -107,13 +103,13 @@ function MonthCalendar({ year, month, selectedDate, onSelectDate }: MonthCalenda
               onClick={() => !isDisabled && onSelectDate(day.dateString)}
               disabled={isDisabled}
               className={`
-                relative aspect-square flex items-center justify-center text-sm rounded-lg transition-all
+                relative aspect-square flex items-center justify-center text-sm font-medium rounded-lg transition-all
                 ${!day.isCurrentMonth ? 'text-gray-300 dark:text-gray-600' : ''}
-                ${day.isCurrentMonth && !isDisabled ? 'text-gray-900 dark:text-white hover:bg-light-accent-primary/10' : ''}
+                ${day.isCurrentMonth && !isDisabled ? 'text-gray-900 dark:text-white hover:bg-light-accent-primary/10 hover:scale-105' : ''}
                 ${day.isPast && day.isCurrentMonth ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
                 ${day.isWeekend && day.isCurrentMonth && !day.isPast ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' : ''}
-                ${isSelected ? 'bg-light-accent-primary text-white hover:bg-light-accent-primary font-semibold' : ''}
-                ${day.isToday && !isSelected ? 'ring-2 ring-light-accent-primary ring-inset' : ''}
+                ${isSelected ? 'bg-light-accent-primary text-white hover:bg-light-accent-primary font-bold shadow-md scale-105' : ''}
+                ${day.isToday && !isSelected ? 'ring-2 ring-light-accent-primary ring-inset font-bold' : ''}
               `}
             >
               {day.day}
@@ -144,27 +140,23 @@ export default function BookAppointmentPage() {
     honeypot: '', // Anti-bot field
   })
 
-  // Calculate the 3 months to display based on offset
-  const calendarMonths = useMemo(() => {
+  // Calculate the current month to display based on offset
+  const currentCalendarMonth = useMemo(() => {
     const today = new Date()
-    const months = []
-    for (let i = 0; i < 3; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() + calendarOffset + i, 1)
-      months.push({ year: date.getFullYear(), month: date.getMonth() })
-    }
-    return months
+    const date = new Date(today.getFullYear(), today.getMonth() + calendarOffset, 1)
+    return { year: date.getFullYear(), month: date.getMonth() }
   }, [calendarOffset])
 
   // Navigation functions
-  const goToPreviousMonths = () => {
+  const goToPreviousMonth = () => {
     if (calendarOffset > 0) {
-      setCalendarOffset(calendarOffset - 3)
+      setCalendarOffset(calendarOffset - 1)
     }
   }
 
-  const goToNextMonths = () => {
-    if (calendarOffset < 9) { // Allow up to 12 months ahead
-      setCalendarOffset(calendarOffset + 3)
+  const goToNextMonth = () => {
+    if (calendarOffset < 11) { // Allow up to 12 months ahead
+      setCalendarOffset(calendarOffset + 1)
     }
   }
 
@@ -383,79 +375,75 @@ export default function BookAppointmentPage() {
                     Select Date & Time
                   </h2>
 
-                  {/* Calendar Navigation */}
-                  <div className="flex items-center justify-between mb-6">
-                    <button
-                      type="button"
-                      onClick={goToPreviousMonths}
-                      disabled={calendarOffset === 0}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
-                        calendarOffset === 0
-                          ? 'border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-light-accent-primary hover:text-light-accent-primary'
-                      }`}
-                    >
-                      <CaretLeft weight="bold" className="w-5 h-5" />
-                      <span className="hidden sm:inline">Previous</span>
-                    </button>
+                  {/* Single Month Calendar with Navigation */}
+                  <div className="max-w-md mx-auto mb-8">
+                    {/* Calendar Navigation */}
+                    <div className="flex items-center justify-between mb-4">
+                      <button
+                        type="button"
+                        onClick={goToPreviousMonth}
+                        disabled={calendarOffset === 0}
+                        className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                          calendarOffset === 0
+                            ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-light-accent-primary/10 hover:text-light-accent-primary'
+                        }`}
+                      >
+                        <CaretLeft weight="bold" className="w-6 h-6" />
+                      </button>
 
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                        {MONTHS[calendarMonths[0].month]} - {MONTHS[calendarMonths[2].month]} {calendarMonths[2].year}
-                      </span>
-                      {calendarOffset !== 0 && (
-                        <button
-                          type="button"
-                          onClick={goToToday}
-                          className="px-3 py-1 text-xs font-medium bg-light-accent-primary/10 text-light-accent-primary rounded-full hover:bg-light-accent-primary/20 transition-colors"
-                        >
-                          Today
-                        </button>
-                      )}
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          {MONTHS[currentCalendarMonth.month]} {currentCalendarMonth.year}
+                        </h3>
+                        {calendarOffset !== 0 && (
+                          <button
+                            type="button"
+                            onClick={goToToday}
+                            className="px-3 py-1 text-xs font-medium bg-light-accent-primary/10 text-light-accent-primary rounded-full hover:bg-light-accent-primary/20 transition-colors"
+                          >
+                            Today
+                          </button>
+                        )}
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={goToNextMonth}
+                        disabled={calendarOffset >= 11}
+                        className={`flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                          calendarOffset >= 11
+                            ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-gray-400 hover:bg-light-accent-primary/10 hover:text-light-accent-primary'
+                        }`}
+                      >
+                        <CaretRight weight="bold" className="w-6 h-6" />
+                      </button>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={goToNextMonths}
-                      disabled={calendarOffset >= 9}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all ${
-                        calendarOffset >= 9
-                          ? 'border-gray-200 dark:border-gray-700 text-gray-400 cursor-not-allowed'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-light-accent-primary hover:text-light-accent-primary'
-                      }`}
-                    >
-                      <span className="hidden sm:inline">Next</span>
-                      <CaretRight weight="bold" className="w-5 h-5" />
-                    </button>
-                  </div>
+                    {/* Calendar Legend */}
+                    <div className="flex flex-wrap justify-center gap-4 mb-4 text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-4 h-4 rounded bg-light-accent-primary"></div>
+                        <span className="text-gray-600 dark:text-gray-400">Selected</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-4 h-4 rounded ring-2 ring-light-accent-primary ring-inset"></div>
+                        <span className="text-gray-600 dark:text-gray-400">Today</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-4 h-4 rounded bg-gray-200 dark:bg-gray-700"></div>
+                        <span className="text-gray-600 dark:text-gray-400">Unavailable</span>
+                      </div>
+                    </div>
 
-                  {/* Calendar Legend */}
-                  <div className="flex flex-wrap gap-4 mb-6 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-light-accent-primary"></div>
-                      <span className="text-gray-600 dark:text-gray-400">Selected</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded ring-2 ring-light-accent-primary ring-inset"></div>
-                      <span className="text-gray-600 dark:text-gray-400">Today</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded bg-gray-100 dark:bg-gray-700"></div>
-                      <span className="text-gray-600 dark:text-gray-400">Unavailable</span>
-                    </div>
-                  </div>
-
-                  {/* 3-Month Calendar Grid */}
-                  <div className="grid md:grid-cols-3 gap-4 mb-8">
-                    {calendarMonths.map(({ year, month }) => (
-                      <MonthCalendar
-                        key={`${year}-${month}`}
-                        year={year}
-                        month={month}
-                        selectedDate={formData.date}
-                        onSelectDate={handleDateSelect}
-                      />
-                    ))}
+                    {/* Single Month Calendar */}
+                    <MonthCalendar
+                      year={currentCalendarMonth.year}
+                      month={currentCalendarMonth.month}
+                      selectedDate={formData.date}
+                      onSelectDate={handleDateSelect}
+                    />
                   </div>
 
                   {/* Time Slots */}
