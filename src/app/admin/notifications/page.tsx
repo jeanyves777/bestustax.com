@@ -24,16 +24,7 @@ interface Notification {
 }
 
 const initialNotifications: Notification[] = [
-  { id: '1', type: 'success', title: 'New Client Registration', message: 'John Smith has completed registration and verification.', time: '5 minutes ago', read: false },
-  { id: '2', type: 'info', title: 'Document Uploaded', message: 'Client Sarah Johnson uploaded W-2 form for review.', time: '15 minutes ago', read: false },
-  { id: '3', type: 'warning', title: 'Appointment Reminder', message: 'You have 3 appointments scheduled for tomorrow.', time: '1 hour ago', read: false },
-  { id: '4', type: 'success', title: 'Tax Return Filed', message: 'Tax return #4521 has been successfully filed with IRS.', time: '2 hours ago', read: true },
-  { id: '5', type: 'info', title: 'New Message', message: 'You have a new message from partner ABC Financial.', time: '3 hours ago', read: true },
-  { id: '6', type: 'error', title: 'Payment Failed', message: 'Payment processing failed for invoice #1234. Please review.', time: '4 hours ago', read: false },
-  { id: '7', type: 'success', title: 'Advisor Joined', message: 'New advisor Michael Chen has joined the team.', time: '5 hours ago', read: true },
-  { id: '8', type: 'warning', title: 'System Maintenance', message: 'Scheduled maintenance tonight from 2 AM - 4 AM EST.', time: '6 hours ago', read: true },
-  { id: '9', type: 'info', title: 'Report Generated', message: 'Monthly analytics report is ready for download.', time: '1 day ago', read: true },
-  { id: '10', type: 'success', title: 'Partner Referral', message: 'New client referred by Smith & Associates.', time: '1 day ago', read: true },
+  { id: '1', type: 'info', title: 'Welcome', message: 'Welcome to BestUsTax admin panel. Notifications will appear here.', time: 'Just now', read: false },
 ]
 
 export default function NotificationsPage() {

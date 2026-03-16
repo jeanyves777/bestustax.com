@@ -42,27 +42,27 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">50K+</div>
+              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">100%</div>
               <div className="text-gray-600 dark:text-gray-300">
-                Happy Clients
+                Accuracy Guarantee
               </div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">$2.5B+</div>
+              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">IRS</div>
               <div className="text-gray-600 dark:text-gray-300">
-                Refunds Processed
+                Authorized e-file
               </div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">4.9/5</div>
+              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">24/7</div>
               <div className="text-gray-600 dark:text-gray-300">
-                Average Rating
+                Online Access
               </div>
             </div>
             <div className="text-center">
-              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">15+</div>
+              <div className="text-5xl font-bold text-brand-blue dark:text-brand-gold mb-2">Fast</div>
               <div className="text-gray-600 dark:text-gray-300">
-                Years of Excellence
+                Turnaround Time
               </div>
             </div>
           </div>

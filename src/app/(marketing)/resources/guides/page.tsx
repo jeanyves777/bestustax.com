@@ -114,7 +114,7 @@ export default function GuidesPage() {
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400">
               Learn everything you need to know about taxes with our comprehensive guides.
-              Written by CPAs, designed for everyone.
+              Written by tax experts, designed for everyone.
             </p>
           </div>
         </div>

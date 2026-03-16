@@ -118,7 +118,7 @@ export function getAppointmentConfirmationTemplate(
     <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
     <p style="color: #999; font-size: 12px; text-align: center;">
       BestUSTax - Professional Tax Services<br>
-      Phone: (512) 555-0123 | Email: info@bestustax.com<br>
+      Email: support@bestustax.com<br>
       <a href="${appUrl}" style="color: #1e40af;">bestustax.com</a>
     </p>
   </div>

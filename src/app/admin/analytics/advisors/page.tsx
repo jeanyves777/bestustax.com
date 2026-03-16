@@ -14,19 +14,13 @@ import {
 import Card from '@/components/ui/Card'
 
 const advisorStats = [
-  { name: 'Total Advisors', value: '24', change: '+3 this month' },
-  { name: 'Avg. Returns/Advisor', value: '53', change: '+12% vs last month' },
-  { name: 'Avg. Rating', value: '4.8', change: 'Based on 1,240 reviews' },
-  { name: 'Active This Week', value: '22', change: '92% activity rate' },
+  { name: 'Total Advisors', value: '0', change: 'No advisors yet' },
+  { name: 'Avg. Returns/Advisor', value: '0', change: 'No data yet' },
+  { name: 'Avg. Rating', value: 'N/A', change: 'No reviews yet' },
+  { name: 'Active This Week', value: '0', change: 'No activity yet' },
 ]
 
-const topAdvisors = [
-  { name: 'Sarah Johnson', returns: 127, rating: 4.9, revenue: '$45,200', clients: 89 },
-  { name: 'Michael Chen', returns: 115, rating: 4.8, revenue: '$41,800', clients: 76 },
-  { name: 'Emily Davis', returns: 98, rating: 4.9, revenue: '$38,500', clients: 65 },
-  { name: 'James Wilson', returns: 92, rating: 4.7, revenue: '$35,200', clients: 58 },
-  { name: 'Lisa Thompson', returns: 87, rating: 4.8, revenue: '$32,100', clients: 52 },
-]
+const topAdvisors: { name: string; returns: number; rating: number; revenue: string; clients: number }[] = []
 
 export default function AdvisorAnalyticsPage() {
   const [timeRange, setTimeRange] = useState('30d')

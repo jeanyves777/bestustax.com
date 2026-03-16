@@ -10,8 +10,8 @@ const contactInfo = [
   {
     icon: Phone,
     title: 'Phone',
-    value: '(800) 555-1234',
-    description: 'Mon-Fri 8am-8pm, Sat 9am-5pm EST',
+    value: 'Coming Soon',
+    description: 'Mon-Fri 9am-6pm EST',
   },
   {
     icon: Envelope,
@@ -21,15 +21,15 @@ const contactInfo = [
   },
   {
     icon: MapPin,
-    title: 'Address',
-    value: '123 Tax Street, Suite 100',
-    description: 'Austin, TX 78701',
+    title: 'Service Area',
+    value: 'Nationwide',
+    description: 'Serving clients across all 50 states',
   },
   {
     icon: Clock,
     title: 'Office Hours',
-    value: 'Mon-Fri: 8am-8pm EST',
-    description: 'Sat: 9am-5pm EST',
+    value: 'Mon-Fri: 9am-6pm EST',
+    description: 'Sat: By appointment',
   },
 ]
 
@@ -40,7 +40,7 @@ const faqs = [
   },
   {
     question: 'Do you offer in-person consultations?',
-    answer: 'Yes! We offer both in-person consultations at our Austin office and virtual meetings via video call. Schedule an appointment through our online booking system.',
+    answer: 'Yes! We offer virtual meetings via video call and phone consultations. Schedule an appointment through our online booking system.',
   },
   {
     question: 'What information should I have ready when I call?',
@@ -272,26 +272,26 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Section (Placeholder) */}
+      {/* Service Area Section */}
       <section className="py-16 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-8">
-              Visit Our <span className="gradient-text">Office</span>
+              Serving Clients <span className="gradient-text">Nationwide</span>
             </h2>
             <Card className="overflow-hidden">
               <div className="h-64 bg-gray-200 dark:bg-gray-800 flex items-center justify-center">
                 <div className="text-center">
                   <MapPin weight="fill" className="w-12 h-12 mx-auto mb-4 text-light-accent-primary dark:text-dark-accent-primary" />
                   <p className="text-gray-600 dark:text-gray-400">
-                    123 Tax Street, Suite 100<br />
-                    Austin, TX 78701
+                    We serve clients across all 50 states<br />
+                    via secure online platform and video consultations
                   </p>
                 </div>
               </div>
             </Card>
             <p className="text-center text-gray-600 dark:text-gray-400 mt-4">
-              Free parking available. Wheelchair accessible.
+              All consultations available virtually. No office visit required.
             </p>
           </div>
         </div>

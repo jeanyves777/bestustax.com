@@ -23,12 +23,7 @@ interface Notification {
 }
 
 const initialNotifications: Notification[] = [
-  { id: '1', type: 'info', title: 'New Client Assigned', message: 'Sarah Johnson has been assigned to you for tax preparation.', time: '10 minutes ago', read: false },
-  { id: '2', type: 'warning', title: 'Appointment in 1 Hour', message: 'Reminder: Meeting with John Smith at 2:00 PM.', time: '30 minutes ago', read: false },
-  { id: '3', type: 'success', title: 'Document Received', message: 'Client Mike Brown uploaded their W-2 form.', time: '2 hours ago', read: false },
-  { id: '4', type: 'info', title: 'New Message', message: 'You have a new message from client Emily Davis.', time: '3 hours ago', read: true },
-  { id: '5', type: 'success', title: 'Tax Return Approved', message: 'Return #3245 has been approved and filed.', time: '5 hours ago', read: true },
-  { id: '6', type: 'warning', title: 'Document Missing', message: 'Client James Wilson is missing 1099 form.', time: '1 day ago', read: true },
+  { id: '1', type: 'info', title: 'Welcome', message: 'Welcome to your advisor dashboard. Notifications will appear here as clients are assigned.', time: 'Just now', read: false },
 ]
 
 export default function AdvisorNotificationsPage() {

@@ -49,7 +49,7 @@ export function HeroSection() {
             >
               <TrendUp weight="bold" className="w-4 h-4 text-brand-blue dark:text-white" />
               <span className="text-sm font-medium text-brand-blue dark:text-white">
-                Trusted by 50,000+ Clients
+                Professional Tax Services You Can Trust
               </span>
             </motion.div>
 
@@ -124,21 +124,21 @@ export function HeroSection() {
             >
               <div className="flex flex-wrap justify-center lg:justify-start gap-8">
                 <div>
-                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">4.9/5</div>
+                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">100%</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Client Rating
+                    Accuracy Guarantee
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">$2.5B+</div>
+                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">IRS</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Refunds Processed
+                    Authorized e-file
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">50K+</div>
+                  <div className="text-3xl font-bold text-brand-blue dark:text-brand-gold">24/7</div>
                   <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Happy Clients
+                    Online Access
                   </div>
                 </div>
               </div>

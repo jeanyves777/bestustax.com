@@ -24,7 +24,7 @@ const features = [
 const benefits = [
   {
     title: 'Maximize Deductions',
-    description: 'Our CPAs identify every legitimate business deduction to reduce your tax burden.',
+    description: 'Our tax experts identify every legitimate business deduction to reduce your tax burden.',
   },
   {
     title: 'Stay Compliant',

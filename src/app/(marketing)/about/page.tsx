@@ -7,14 +7,14 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'About Us | BestUsTax',
   description:
-    'Learn about BestUsTax - our mission, values, and the team of CPAs and tax professionals dedicated to helping you succeed.',
+    'Learn about BestUsTax - our mission, values, and the team of tax professionals dedicated to helping you succeed.',
 }
 
 const stats = [
-  { value: '50,000+', label: 'Clients Served' },
-  { value: '$2.5B+', label: 'In Refunds Secured' },
-  { value: '15+', label: 'Years Experience' },
-  { value: '4.9/5', label: 'Client Rating' },
+  { value: '100%', label: 'Accuracy Guarantee' },
+  { value: 'IRS', label: 'Authorized e-file' },
+  { value: '24/7', label: 'Online Access' },
+  { value: 'Fast', label: 'Turnaround Time' },
 ]
 
 const values = [
@@ -42,43 +42,40 @@ const values = [
 
 const team = [
   {
-    name: 'Sarah Johnson, CPA',
-    role: 'Founder & CEO',
-    bio: '20+ years of tax experience. Former IRS Revenue Agent. Passionate about making taxes accessible to everyone.',
+    name: 'Our Tax Experts',
+    role: 'Licensed Professionals',
+    bio: 'Our team of licensed tax professionals is dedicated to helping you navigate the tax system with confidence.',
   },
   {
-    name: 'Michael Chen, EA',
-    role: 'Director of Tax Services',
-    bio: 'Enrolled Agent with expertise in business taxation. Specializes in S-Corp and partnership returns.',
+    name: 'Enrolled Agents',
+    role: 'IRS-Licensed Specialists',
+    bio: 'Enrolled Agents authorized by the IRS to represent taxpayers. Experts in business and individual taxation.',
   },
   {
-    name: 'Emily Rodriguez, CPA',
-    role: 'Head of Client Success',
-    bio: 'Dedicated to ensuring every client has a seamless experience. Expert in individual tax planning.',
+    name: 'Client Support',
+    role: 'Dedicated Support Team',
+    bio: 'Our support team is here to ensure every client has a seamless experience from start to finish.',
   },
   {
-    name: 'David Park, CPA',
-    role: 'Senior Tax Manager',
-    bio: 'Specializes in complex tax situations including multi-state filing and international tax issues.',
+    name: 'Tax Advisors',
+    role: 'Strategic Planning',
+    bio: 'Specializing in complex tax situations including multi-state filing and tax planning strategies.',
   },
 ]
 
 const certifications = [
   'IRS-Authorized e-file Provider',
   'Better Business Bureau A+ Rating',
-  'Certified Public Accountants (CPA)',
+  'Licensed Tax Professionals',
   'Enrolled Agents (EA)',
   'QuickBooks ProAdvisors',
-  'Member - AICPA',
+  'Member - National Association of Tax Professionals',
 ]
 
 const milestones = [
-  { year: '2009', event: 'BestUsTax founded in Austin, Texas' },
-  { year: '2012', event: 'Expanded to serve clients nationwide' },
-  { year: '2015', event: 'Launched online tax preparation platform' },
-  { year: '2018', event: 'Reached 25,000 clients milestone' },
-  { year: '2021', event: 'Introduced AI-powered deduction finder' },
-  { year: '2024', event: 'Serving 50,000+ clients across all 50 states' },
+  { year: '2025', event: 'BestUsTax founded with a mission to make tax services accessible' },
+  { year: '2025', event: 'Launched online tax preparation platform' },
+  { year: '2026', event: 'Expanding services nationwide' },
 ]
 
 export default function AboutPage() {
@@ -93,7 +90,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               We're on a mission to make professional tax services accessible to everyone.
-              Our team of CPAs and Enrolled Agents are dedicated to maximizing your refund
+              Our team of tax professionals and Enrolled Agents are dedicated to maximizing your refund
               while minimizing your stress.
             </p>
           </div>
@@ -127,22 +124,20 @@ export default function AboutPage() {
             </h2>
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                BestUsTax was founded in 2009 by Sarah Johnson, a former IRS Revenue Agent who saw
-                firsthand how confusing and intimidating the tax system can be for everyday Americans.
+                BestUsTax was founded with a simple but powerful mission: make professional tax
+                services accessible, affordable, and stress-free for everyday Americans.
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                After years of working inside the IRS, Sarah realized that most taxpayers were
-                leaving money on the table—not because they were trying to avoid taxes, but because
-                they simply didn't understand all the deductions and credits available to them.
+                We believe most taxpayers leave money on the table—not because they're trying to
+                avoid taxes, but because they don't understand all the deductions and credits
+                available to them. That's where we come in.
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                She founded BestUsTax with a simple mission: provide expert-level tax preparation
-                at prices everyday families could afford. What started as a small practice in
-                Austin, Texas has grown into a nationwide team of CPAs and Enrolled Agents serving
-                over 50,000 clients.
+                Our team of licensed tax professionals and Enrolled Agents combines expert knowledge
+                with modern technology to maximize your refund and minimize your stress.
               </p>
               <p className="text-gray-600 dark:text-gray-400">
-                Today, we combine cutting-edge technology with human expertise to deliver the
+                We combine cutting-edge technology with human expertise to deliver the
                 best possible outcomes for our clients. Every return is reviewed by a licensed
                 professional, and every client has access to year-round support.
               </p>
@@ -268,8 +263,8 @@ export default function AboutPage() {
             Ready to Experience the BestUsTax Difference?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join the 50,000+ clients who trust us with their taxes every year.
-            Schedule a free consultation today.
+            Experience the BestUsTax difference. Professional tax preparation
+            with a personal touch. Schedule a free consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/book-appointment">

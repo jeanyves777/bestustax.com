@@ -10,22 +10,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Dark Mode Colors (Dark Blue backgrounds with Gold accents)
+        // Dark Mode Colors (Charcoal/Slate backgrounds with Red & Gold accents)
         dark: {
           bg: {
-            primary: '#0A1628',      // Very dark blue
-            secondary: '#132337',    // Dark blue
-            tertiary: '#1E3A5F',     // Medium dark blue
+            primary: '#2e353d',      // Charcoal
+            secondary: '#444f5a',    // Dark slate
+            tertiary: '#5a6877',     // Medium gray
           },
           accent: {
-            primary: '#D4AF37',      // Gold
-            secondary: '#C19B2B',    // Darker gold
+            primary: '#c43201',      // Burnt red
+            secondary: '#912501',    // Dark maroon
           },
-          success: '#D4AF37',        // Gold for success
+          success: '#C7AE6A',        // Gold for success
           warning: '#FFB800',
           error: '#FF3B30',
         },
-        // Light Mode Colors (White backgrounds with Dark Blue and Gold)
+        // Light Mode Colors (White backgrounds with Slate and Red)
         light: {
           bg: {
             primary: '#FFFFFF',      // White
@@ -33,21 +33,28 @@ const config: Config = {
             tertiary: '#F1F5F9',     // Light gray
           },
           accent: {
-            primary: '#1E3A5F',      // Dark blue
-            secondary: '#0F2847',    // Darker blue
+            primary: '#912501',      // Dark maroon
+            secondary: '#2e353d',    // Charcoal
           },
-          success: '#D4AF37',        // Gold for success
+          success: '#C7AE6A',        // Gold for success
           warning: '#FF8C00',
           error: '#DC3545',
         },
         // Brand colors
         brand: {
-          gold: '#D4AF37',           // Primary gold
-          'gold-light': '#E5C158',   // Light gold
-          'gold-dark': '#C19B2B',    // Dark gold
-          blue: '#1E3A5F',           // Dark blue
-          'blue-dark': '#0F2847',    // Darker blue
-          'blue-light': '#2E5A8F',   // Lighter blue
+          gold: '#C7AE6A',           // Muted gold
+          'gold-light': '#d4be82',   // Light gold
+          'gold-dark': '#a8935a',    // Dark gold
+          red: '#c43201',            // Burnt red/orange
+          'red-dark': '#912501',     // Dark maroon
+          'red-light': '#e04a1a',    // Lighter red
+          slate: '#444f5a',          // Dark slate
+          'slate-dark': '#2e353d',   // Charcoal
+          'slate-light': '#5a6877',  // Medium gray
+          // Keep blue aliases for backward compatibility
+          blue: '#444f5a',           // Maps to slate
+          'blue-dark': '#2e353d',    // Maps to charcoal
+          'blue-light': '#5a6877',   // Maps to medium gray
         },
       },
       fontFamily: {
@@ -89,10 +96,12 @@ const config: Config = {
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       boxShadow: {
-        'glow': '0 0 20px rgba(212, 175, 55, 0.3)',        // Gold glow
-        'glow-lg': '0 0 40px rgba(212, 175, 55, 0.4)',     // Gold glow large
-        'glow-blue': '0 0 20px rgba(30, 58, 95, 0.3)',     // Blue glow
-        'glow-blue-lg': '0 0 40px rgba(30, 58, 95, 0.4)', // Blue glow large
+        'glow': '0 0 20px rgba(199, 174, 106, 0.3)',        // Gold glow
+        'glow-lg': '0 0 40px rgba(199, 174, 106, 0.4)',     // Gold glow large
+        'glow-red': '0 0 20px rgba(196, 50, 1, 0.3)',       // Red glow
+        'glow-red-lg': '0 0 40px rgba(196, 50, 1, 0.4)',    // Red glow large
+        'glow-blue': '0 0 20px rgba(68, 79, 90, 0.3)',      // Slate glow
+        'glow-blue-lg': '0 0 40px rgba(68, 79, 90, 0.4)',   // Slate glow large
       },
     },
   },

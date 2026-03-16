@@ -93,7 +93,7 @@ const defaultSettings: Settings = {
     loginAttempts: 5,
   },
   branding: {
-    primaryColor: '#00D9FF',
+    primaryColor: '#c43201',
     logo: '',
     favicon: '',
   },

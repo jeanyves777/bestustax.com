@@ -88,7 +88,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.png" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <meta name="theme-color" content="#00D9FF" />
+        <meta name="theme-color" content="#2e353d" />
       </head>
       <body className={inter.variable}>
         <AuthProvider>
