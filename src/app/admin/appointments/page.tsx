@@ -28,7 +28,7 @@ const statusColors: Record<string, string> = {
   scheduled: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
   confirmed: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
   completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-  cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+  cancelled: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
 }
 
 const serviceTypes = [
@@ -223,7 +223,7 @@ END:VCALENDAR`
           <div className="text-sm text-gray-600 dark:text-gray-400">Confirmed</div>
         </Card>
         <Card className="p-4 text-center">
-          <div className="text-2xl font-bold text-red-600">{stats.cancelled}</div>
+          <div className="text-2xl font-bold text-amber-600">{stats.cancelled}</div>
           <div className="text-sm text-gray-600 dark:text-gray-400">Cancelled</div>
         </Card>
       </div>
@@ -348,7 +348,7 @@ END:VCALENDAR`
                               variant="ghost"
                               onClick={() => handleCancel(appointment.id)}
                               disabled={actionLoading === appointment.id}
-                              className="text-red-600 hover:bg-red-50"
+                              className="text-amber-600 hover:bg-amber-50"
                             >
                               <X weight="bold" className="w-4 h-4" />
                             </Button>
@@ -590,7 +590,7 @@ function CreateAppointmentModal({ onClose, onSuccess }: { onClose: () => void; o
                               formData.time === time
                                 ? 'border-light-accent-primary bg-light-accent-primary text-white'
                                 : isBooked
-                                ? 'border-red-300 bg-red-50 text-red-400 cursor-not-allowed'
+                                ? 'border-amber-300 bg-amber-50 text-amber-400 cursor-not-allowed'
                                 : 'border-gray-200 dark:border-gray-700 hover:border-light-accent-primary'
                             }`}
                           >

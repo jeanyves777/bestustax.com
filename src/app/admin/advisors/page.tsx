@@ -240,7 +240,7 @@ export default function AdvisorsPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="text-red-600"
+                    className="text-amber-600"
                     onClick={() => deleteAdvisor(advisor.id)}
                     leftIcon={<Trash />}
                   />

@@ -29,7 +29,7 @@ const roleColors: Record<string, string> = {
 const statusColors: Record<string, string> = {
   active: 'bg-green-100 text-green-800',
   pending: 'bg-yellow-100 text-yellow-800',
-  suspended: 'bg-red-100 text-red-800',
+  suspended: 'bg-amber-100 text-amber-800',
 }
 
 export default function UsersPage() {
@@ -301,7 +301,7 @@ export default function UsersPage() {
                           variant="ghost"
                           onClick={() => handleDelete(user.id)}
                           disabled={actionLoading === user.id}
-                          className="text-red-600 hover:bg-red-50"
+                          className="text-amber-600 hover:bg-amber-50"
                           title="Delete"
                         >
                           <Trash className="w-4 h-4" />

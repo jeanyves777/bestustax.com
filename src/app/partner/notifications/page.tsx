@@ -119,7 +119,7 @@ export default function PartnerNotificationsPage() {
                       {!notification.read && (
                         <button onClick={() => markAsRead(notification.id)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"><Check className="w-4 h-4" /></button>
                       )}
-                      <button onClick={() => deleteNotification(notification.id)} className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg"><Trash className="w-4 h-4" /></button>
+                      <button onClick={() => deleteNotification(notification.id)} className="p-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg"><Trash className="w-4 h-4" /></button>
                     </div>
                   </div>
                 </div>

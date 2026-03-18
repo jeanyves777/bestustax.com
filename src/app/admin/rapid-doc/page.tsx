@@ -61,7 +61,7 @@ export default function RapidDocPage() {
 
   const getStatus = (access: RapidDocAccess) => {
     if (access.completed) return { label: 'Completed', color: 'bg-green-100 text-green-800' }
-    if (new Date(access.expiresAt) < new Date()) return { label: 'Expired', color: 'bg-red-100 text-red-800' }
+    if (new Date(access.expiresAt) < new Date()) return { label: 'Expired', color: 'bg-amber-100 text-amber-800' }
     if (access.used) return { label: 'In Progress', color: 'bg-blue-100 text-blue-800' }
     return { label: 'Pending', color: 'bg-yellow-100 text-yellow-800' }
   }
@@ -103,7 +103,7 @@ export default function RapidDocPage() {
           <div className="text-sm text-gray-600 dark:text-gray-400">Completed</div>
         </Card>
         <Card className="p-4 text-center">
-          <div className="text-2xl font-bold text-red-600">{stats.expired}</div>
+          <div className="text-2xl font-bold text-amber-600">{stats.expired}</div>
           <div className="text-sm text-gray-600 dark:text-gray-400">Expired</div>
         </Card>
       </div>
@@ -191,7 +191,7 @@ export default function RapidDocPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className={`flex items-center gap-1 text-sm ${isExpired ? 'text-red-500' : 'text-gray-500'}`}>
+                        <div className={`flex items-center gap-1 text-sm ${isExpired ? 'text-amber-500' : 'text-gray-500'}`}>
                           <Clock className="w-4 h-4" />
                           {new Date(access.expiresAt).toLocaleString()}
                         </div>

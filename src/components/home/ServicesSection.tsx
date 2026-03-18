@@ -53,7 +53,7 @@ const services = [
     icon: ShieldCheck,
     features: ['Audit Defense', 'IRS Communication', 'Resolution Support'],
     href: '/services/audit-support',
-    color: 'from-orange-500 to-red-500',
+    color: 'from-orange-500 to-amber-600',
   },
   {
     id: 'bookkeeping',

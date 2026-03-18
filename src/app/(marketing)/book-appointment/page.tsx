@@ -467,7 +467,7 @@ export default function BookAppointmentPage() {
                                 ${isSelected
                                   ? 'border-light-accent-primary bg-light-accent-primary text-white shadow-md'
                                   : isBooked
-                                  ? 'border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 text-red-400 dark:text-red-500 cursor-not-allowed line-through'
+                                  ? 'border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-400 dark:text-amber-500 cursor-not-allowed line-through'
                                   : 'border-gray-200 dark:border-gray-700 hover:border-light-accent-primary hover:bg-light-accent-primary/5'
                                 }
                               `}

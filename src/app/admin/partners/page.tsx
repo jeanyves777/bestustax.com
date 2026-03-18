@@ -28,7 +28,7 @@ interface Partner {
 const statusConfig: Record<string, { color: string; label: string }> = {
   pending: { color: 'bg-yellow-100 text-yellow-800', label: 'Pending' },
   active: { color: 'bg-green-100 text-green-800', label: 'Active' },
-  suspended: { color: 'bg-red-100 text-red-800', label: 'Suspended' },
+  suspended: { color: 'bg-amber-100 text-amber-800', label: 'Suspended' },
   rejected: { color: 'bg-gray-100 text-gray-800', label: 'Rejected' },
 }
 
@@ -301,7 +301,7 @@ export default function PartnersPage() {
                               variant="outline"
                               onClick={() => handleSuspend(partner.id)}
                               disabled={actionLoading === partner.id}
-                              className="text-red-600 border-red-600"
+                              className="text-amber-600 border-amber-600"
                             >
                               Suspend
                             </Button>

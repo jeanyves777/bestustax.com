@@ -92,7 +92,7 @@ export default function AppointmentsPage() {
       case 'completed':
         return 'bg-gray-100 text-gray-800'
       case 'cancelled':
-        return 'bg-red-100 text-red-800'
+        return 'bg-amber-100 text-amber-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }

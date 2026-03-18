@@ -303,7 +303,7 @@ export default function DocumentsPage() {
                             onClick={() => handleDelete(doc.id)}
                             disabled={actionLoading === doc.id}
                             title="Delete"
-                            className="text-red-600 hover:bg-red-50"
+                            className="text-amber-600 hover:bg-amber-50"
                           >
                             <Trash className="w-4 h-4" />
                           </Button>

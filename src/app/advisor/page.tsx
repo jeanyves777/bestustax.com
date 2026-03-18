@@ -147,8 +147,8 @@ export default function AdvisorDashboard() {
 
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-lg">
-              <ChatCircle className="w-6 h-6 text-red-600" />
+            <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+              <ChatCircle className="w-6 h-6 text-amber-600" />
             </div>
             <div>
               <p className="text-2xl font-bold">{stats.unreadMessages}</p>

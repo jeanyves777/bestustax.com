@@ -76,7 +76,7 @@ const analyticsModules = [
     description: 'Login attempts, suspicious activity, and security events',
     href: '/admin/analytics/security',
     icon: ShieldCheck,
-    color: 'bg-red-500',
+    color: 'bg-amber-500',
   },
 ]
 

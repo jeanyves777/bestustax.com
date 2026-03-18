@@ -260,7 +260,7 @@ export default function BlogPage() {
                   <Button
                     size="sm"
                     variant="ghost"
-                    className="text-red-600"
+                    className="text-amber-600"
                     onClick={() => deletePost(post.id)}
                     leftIcon={<Trash />}
                   />

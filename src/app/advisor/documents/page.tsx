@@ -75,7 +75,7 @@ export default function AdvisorDocumentsPage() {
   }
 
   const getFileIcon = (type: string) => {
-    if (type.includes('pdf')) return <FilePdf className="w-6 h-6 text-red-500" />
+    if (type.includes('pdf')) return <FilePdf className="w-6 h-6 text-amber-500" />
     if (type.includes('word') || type.includes('doc')) return <FileDoc className="w-6 h-6 text-blue-500" />
     if (type.includes('image')) return <FileImage className="w-6 h-6 text-green-500" />
     return <FileText className="w-6 h-6 text-gray-500" />
@@ -88,7 +88,7 @@ export default function AdvisorDocumentsPage() {
       case 'verified':
         return 'bg-green-100 text-green-800'
       case 'rejected':
-        return 'bg-red-100 text-red-800'
+        return 'bg-amber-100 text-amber-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -266,7 +266,7 @@ export default function AdvisorDocumentsPage() {
                               <Button
                                 size="sm"
                                 variant="outline"
-                                className="text-red-600 border-red-300"
+                                className="text-amber-600 border-amber-300"
                                 onClick={() => updateDocumentStatus(doc.id, 'rejected')}
                                 leftIcon={<X />}
                               >

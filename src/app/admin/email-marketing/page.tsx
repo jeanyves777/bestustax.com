@@ -104,7 +104,7 @@ export default function EmailMarketingPage() {
       case 'sent':
         return 'bg-green-100 text-green-800'
       case 'cancelled':
-        return 'bg-red-100 text-red-800'
+        return 'bg-amber-100 text-amber-800'
       default:
         return 'bg-gray-100 text-gray-800'
     }
@@ -356,7 +356,7 @@ export default function EmailMarketingPage() {
                           className={`px-2 py-1 text-xs font-medium rounded-full ${
                             contact.subscribed
                               ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
+                              : 'bg-amber-100 text-amber-800'
                           }`}
                         >
                           {contact.subscribed ? 'Subscribed' : 'Unsubscribed'}
@@ -385,7 +385,7 @@ export default function EmailMarketingPage() {
                           <Button size="sm" variant="ghost" leftIcon={<PencilSimple />}>
                             Edit
                           </Button>
-                          <Button size="sm" variant="ghost" className="text-red-600" leftIcon={<Trash />}>
+                          <Button size="sm" variant="ghost" className="text-amber-600" leftIcon={<Trash />}>
                             Delete
                           </Button>
                         </div>

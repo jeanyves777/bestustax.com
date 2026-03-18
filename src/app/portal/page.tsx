@@ -160,7 +160,7 @@ export default async function PortalDashboard() {
             <div className="text-2xl font-bold">{stats.unreadMessages}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Unread Messages</div>
             {stats.unreadMessages > 0 && (
-              <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full" />
+              <span className="absolute top-2 right-2 w-3 h-3 bg-amber-500 rounded-full" />
             )}
           </Card>
         </Link>

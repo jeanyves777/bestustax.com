@@ -95,7 +95,7 @@ export default function DocumentsPage() {
   }
 
   const getFileIcon = (type: string) => {
-    if (type.includes('pdf')) return <FilePdf className="w-8 h-8 text-red-500" />
+    if (type.includes('pdf')) return <FilePdf className="w-8 h-8 text-amber-500" />
     if (type.includes('word') || type.includes('doc')) return <FileDoc className="w-8 h-8 text-blue-500" />
     if (type.includes('image') || type.includes('png') || type.includes('jpg'))
       return <FileImage className="w-8 h-8 text-green-500" />
@@ -233,7 +233,7 @@ export default function DocumentsPage() {
                                 doc.status === 'verified'
                                   ? 'bg-green-100 text-green-800'
                                   : doc.status === 'rejected'
-                                  ? 'bg-red-100 text-red-800'
+                                  ? 'bg-amber-100 text-amber-800'
                                   : 'bg-yellow-100 text-yellow-800'
                               }`}
                             >
@@ -267,7 +267,7 @@ export default function DocumentsPage() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="text-red-600"
+                          className="text-amber-600"
                           onClick={() => deleteDocument(doc.id)}
                           leftIcon={<Trash />}
                         />
@@ -525,7 +525,7 @@ function ViewDocumentModal({ document, onClose }: { document: Document; onClose:
                     document.status === 'verified'
                       ? 'bg-green-100 text-green-800'
                       : document.status === 'rejected'
-                      ? 'bg-red-100 text-red-800'
+                      ? 'bg-amber-100 text-amber-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}
                 >

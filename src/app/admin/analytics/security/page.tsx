@@ -131,7 +131,7 @@ export default function SecurityAnalyticsPage() {
         <Card className="overflow-hidden">
           <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
             <h3 className="font-semibold">Blocked IP Addresses</h3>
-            <ShieldWarning className="w-5 h-5 text-red-500" />
+            <ShieldWarning className="w-5 h-5 text-amber-500" />
           </div>
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {blockedIPs.map((blocked, index) => (
