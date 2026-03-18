@@ -172,7 +172,7 @@ export default function PartnerSettingsPage() {
                   value={profile.phone}
                   onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                   leftIcon={<Phone />}
-                  placeholder="(555) 123-4567"
+                  placeholder="+1 (413) 645-4619"
                 />
                 <Input
                   label="Company (Optional)"

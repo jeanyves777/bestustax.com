@@ -271,7 +271,7 @@ export function TaxCalculator() {
 
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
               This is an estimate only. Actual results may vary. Consult with a
-              tax professional for accurate filing.
+              professional accountant for accurate filing.
             </p>
           </motion.div>
         )}

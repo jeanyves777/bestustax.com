@@ -356,7 +356,7 @@ export function SelfEmploymentCalculator() {
 
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
               This estimate is for federal taxes only. State taxes are not included.
-              Consult with a tax professional for accurate tax planning.
+              Consult with a professional accountant for accurate tax planning.
             </p>
           </motion.div>
         )}

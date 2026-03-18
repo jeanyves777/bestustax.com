@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-const fromEmail = process.env.EMAIL_FROM || 'noreply@bestustax.com'
+const fromEmail = process.env.EMAIL_FROM || 'info@bestustax.com'
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://bestustax.com'
 
 interface EmailOptions {
@@ -118,7 +118,7 @@ export function getAppointmentConfirmationTemplate(
     <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 20px 0;">
     <p style="color: #999; font-size: 12px; text-align: center;">
       BestUSTax - Professional Tax Services<br>
-      Email: support@bestustax.com<br>
+      Email: info@bestustax.com<br>
       <a href="${appUrl}" style="color: #1e40af;">bestustax.com</a>
     </p>
   </div>
@@ -187,18 +187,18 @@ export function getAdminNotificationTemplate(
   <meta charset="utf-8">
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-  <div style="background: #dc2626; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
+  <div style="background: #f97316; padding: 20px; text-align: center; border-radius: 10px 10px 0 0;">
     <h1 style="color: white; margin: 0;">Admin Notification</h1>
   </div>
   <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px;">
-    <h2 style="color: #dc2626;">${title}</h2>
+    <h2 style="color: #f97316;">${title}</h2>
     <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5e7eb;">
       ${Object.entries(details)
         .map(([key, value]) => `<p style="margin: 8px 0;"><strong>${key}:</strong> ${value}</p>`)
         .join('')}
     </div>
     <div style="text-align: center; margin: 30px 0;">
-      <a href="${appUrl}/portal/admin" style="background: #dc2626; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Go to Admin Portal</a>
+      <a href="${appUrl}/portal/admin" style="background: #f97316; color: white; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: bold; display: inline-block;">Go to Admin Portal</a>
     </div>
   </div>
 </body>

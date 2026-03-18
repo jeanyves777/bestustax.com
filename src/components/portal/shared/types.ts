@@ -14,7 +14,7 @@ export const portalConfigsBase: Record<PortalRole, PortalConfigBase> = {
     title: 'Admin Portal',
     basePath: '/admin',
     accentColor: 'blue',
-    badgeColor: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+    badgeColor: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400',
   },
   advisor: {
     role: 'advisor',

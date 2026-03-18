@@ -155,7 +155,7 @@ export default function WithholdingPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-3xl mx-auto">
             This calculator provides estimates for informational purposes only. State and local taxes
             are not included. Your actual withholding may differ based on your specific W-4 elections
-            and employer payroll settings. Consult with a tax professional for personalized advice.
+            and employer payroll settings. Consult with a professional accountant for personalized advice.
           </p>
         </div>
       </section>

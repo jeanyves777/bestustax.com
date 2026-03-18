@@ -7,7 +7,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'About Us | BestUsTax',
   description:
-    'Learn about BestUsTax - our mission, values, and the team of tax professionals dedicated to helping you succeed.',
+    'Learn about BestUsTax - our mission, values, and the team of professional accountants dedicated to helping you succeed.',
 }
 
 const stats = [
@@ -43,8 +43,8 @@ const values = [
 const team = [
   {
     name: 'Our Tax Experts',
-    role: 'Licensed Professionals',
-    bio: 'Our team of licensed tax professionals is dedicated to helping you navigate the tax system with confidence.',
+    role: 'Professional Accountants',
+    bio: 'Our team of professional accountants is dedicated to helping you navigate the tax system with confidence.',
   },
   {
     name: 'Enrolled Agents',
@@ -66,17 +66,12 @@ const team = [
 const certifications = [
   'IRS-Authorized e-file Provider',
   'Better Business Bureau A+ Rating',
-  'Licensed Tax Professionals',
+  'Professional Accountants',
   'Enrolled Agents (EA)',
   'QuickBooks ProAdvisors',
-  'Member - National Association of Tax Professionals',
+  'Member - National Association of Professional Accountants',
 ]
 
-const milestones = [
-  { year: '2025', event: 'BestUsTax founded with a mission to make tax services accessible' },
-  { year: '2025', event: 'Launched online tax preparation platform' },
-  { year: '2026', event: 'Expanding services nationwide' },
-]
 
 export default function AboutPage() {
   return (
@@ -90,7 +85,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               We're on a mission to make professional tax services accessible to everyone.
-              Our team of tax professionals and Enrolled Agents are dedicated to maximizing your refund
+              Our team of professional accountants and Enrolled Agents are dedicated to maximizing your refund
               while minimizing your stress.
             </p>
           </div>
@@ -133,7 +128,7 @@ export default function AboutPage() {
                 available to them. That's where we come in.
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Our team of licensed tax professionals and Enrolled Agents combines expert knowledge
+                Our team of professional accountants and Enrolled Agents combines expert knowledge
                 with modern technology to maximize your refund and minimize your stress.
               </p>
               <p className="text-gray-600 dark:text-gray-400">
@@ -197,41 +192,6 @@ export default function AboutPage() {
                 </p>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-24 bg-white dark:bg-dark-bg-primary">
-        <div className="container-custom">
-          <h2 className="text-4xl font-bold text-center mb-12">
-            Our <span className="gradient-text">Journey</span>
-          </h2>
-          <div className="max-w-3xl mx-auto">
-            <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success transform md:-translate-x-1/2" />
-
-              {milestones.map((milestone, index) => (
-                <div
-                  key={milestone.year}
-                  className={`relative flex items-center mb-8 ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'} pl-8 md:pl-0`}>
-                    <div className="text-2xl font-bold gradient-text mb-1">
-                      {milestone.year}
-                    </div>
-                    <div className="text-gray-600 dark:text-gray-400">
-                      {milestone.event}
-                    </div>
-                  </div>
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-light-accent-primary dark:bg-dark-accent-primary rounded-full transform md:-translate-x-1/2 border-4 border-white dark:border-dark-bg-primary" />
-                  <div className="flex-1 hidden md:block" />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>

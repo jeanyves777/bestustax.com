@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       type: appointment.type,
       date: formattedDate,
       time: appointment.time,
-      location: appointment.location || 'BestUsTax Office, 123 Tax Street, Austin, TX 78701',
+      location: appointment.location || 'Virtual / Remote Consultation',
     })
     await sendEmail({
       to: appointment.client.email,

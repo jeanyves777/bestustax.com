@@ -64,7 +64,7 @@ interface Settings {
 const defaultSettings: Settings = {
   company: {
     name: 'BestUSTax',
-    email: 'contact@bestustax.com',
+    email: 'info@bestustax.com',
     phone: '',
     address: '',
     website: 'https://bestustax.com',
@@ -351,7 +351,7 @@ export default function SettingsPage() {
                         email: { ...settings.email, fromEmail: e.target.value },
                       })
                     }
-                    placeholder="noreply@bestustax.com"
+                    placeholder="info@bestustax.com"
                   />
                   <Input
                     label="From Name"

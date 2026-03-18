@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         type,
         status: 'scheduled',
         notes,
-        location: 'BestUsTax Office, 123 Tax Street, Austin, TX 78701',
+        location: 'Virtual / Remote Consultation',
       },
     })
 

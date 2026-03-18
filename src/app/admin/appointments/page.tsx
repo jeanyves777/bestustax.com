@@ -162,7 +162,7 @@ DTSTART:${formatICSDate(startDate)}
 DTEND:${formatICSDate(endDate)}
 SUMMARY:${appointment.type} - ${appointment.client.name || appointment.client.email}
 DESCRIPTION:Tax appointment with ${appointment.client.name || appointment.client.email}
-LOCATION:BestUsTax Office, 123 Tax Street, Austin, TX 78701
+LOCATION:Virtual / Remote Consultation
 STATUS:CONFIRMED
 END:VEVENT
 END:VCALENDAR`
@@ -533,7 +533,7 @@ function CreateAppointmentModal({ onClose, onSuccess }: { onClose: () => void; o
                     label="Phone"
                     value={formData.clientPhone}
                     onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-                    placeholder="(555) 123-4567"
+                    placeholder="+1 (413) 645-4619"
                   />
                 </div>
               </div>

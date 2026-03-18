@@ -18,7 +18,7 @@ const tips = [
 const faqs = [
   {
     question: 'How accurate is this tax refund calculator?',
-    answer: 'Our calculator uses current 2024 federal tax brackets and provides a reasonable estimate. However, actual results may vary based on your complete tax situation. For the most accurate calculation, consult with a tax professional.',
+    answer: 'Our calculator uses current 2024 federal tax brackets and provides a reasonable estimate. However, actual results may vary based on your complete tax situation. For the most accurate calculation, consult with a professional accountant.',
   },
   {
     question: 'What is the standard deduction for 2024?',
@@ -109,7 +109,7 @@ export default function RefundEstimatorPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-3xl mx-auto">
             This calculator provides estimates for informational purposes only and should not be
             considered tax advice. Tax laws are complex and your actual tax situation may differ.
-            Consult with a qualified tax professional for accurate tax filing.
+            Consult with a qualified professional accountant for accurate tax filing.
           </p>
         </div>
       </section>

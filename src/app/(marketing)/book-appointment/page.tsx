@@ -286,7 +286,7 @@ export default function BookAppointmentPage() {
             </Link>
             <h1 className="text-4xl font-bold mb-2">Book an Appointment</h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Schedule a consultation with one of our tax professionals
+              Schedule a consultation with one of our professional accountants
             </p>
           </div>
 
@@ -538,7 +538,7 @@ export default function BookAppointmentPage() {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="(555) 123-4567"
+                      placeholder="+1 (413) 645-4619"
                       leftIcon={<Phone />}
                       required
                     />
@@ -571,7 +571,7 @@ export default function BookAppointmentPage() {
                         <strong>Time:</strong> {formData.time}
                       </p>
                       <p>
-                        <strong>Location:</strong> BestUsTax Office, 123 Tax Street, Austin, TX
+                        <strong>Location:</strong> Virtual / Remote Consultation
                       </p>
                     </div>
                   </div>
@@ -602,7 +602,7 @@ export default function BookAppointmentPage() {
 
           {/* Contact Info */}
           <div className="mt-8 text-center text-sm text-gray-500">
-            <p>Need immediate assistance? Call us at (800) 555-1234</p>
+            <p>Need immediate assistance? Call us at +1 (413) 645-4619</p>
             <p className="mt-1">
               Office hours: Monday - Friday, 9:00 AM - 5:00 PM CT
             </p>

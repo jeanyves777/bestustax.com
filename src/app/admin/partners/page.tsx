@@ -289,7 +289,7 @@ export default function PartnersPage() {
                                 variant="ghost"
                                 onClick={() => handleReject(partner.id)}
                                 disabled={actionLoading === partner.id}
-                                className="text-red-600"
+                                className="text-orange-600"
                               >
                                 <XIcon weight="bold" className="w-4 h-4" />
                               </Button>

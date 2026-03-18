@@ -179,10 +179,8 @@ export default function TermsOfServicePage() {
             </p>
             <p>
               <strong>BestUsTax Legal Department</strong><br />
-              123 Tax Street, Suite 100<br />
-              Austin, TX 78701<br />
-              Email: legal@bestustax.com<br />
-              Phone: (800) 555-1234
+              Email: info@bestustax.com<br />
+              Phone: +1 (413) 645-4619
             </p>
 
             <h2>IRS Circular 230 Disclosure</h2>

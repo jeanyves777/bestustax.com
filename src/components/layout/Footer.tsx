@@ -129,7 +129,7 @@ export function Footer() {
               <div className="flex items-center gap-3 text-sm">
                 <Phone weight="bold" className="w-5 h-5 text-light-accent-primary dark:text-dark-accent-primary" />
                 <span className="text-gray-600 dark:text-gray-400">
-                  (555) 123-4567
+                  +1 (413) 645-4619
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm">
@@ -141,9 +141,7 @@ export function Footer() {
               <div className="flex items-center gap-3 text-sm">
                 <MapPin weight="bold" className="w-5 h-5 text-light-accent-primary dark:text-dark-accent-primary" />
                 <span className="text-gray-600 dark:text-gray-400">
-                  123 Tax Avenue, Suite 100
-                  <br />
-                  New York, NY 10001
+                  Serving clients nationwide
                 </span>
               </div>
             </div>

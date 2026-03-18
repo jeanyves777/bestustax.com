@@ -28,7 +28,7 @@ const benefits = [
   {
     icon: UserCircle,
     title: 'Expert Tax Advisors',
-    description: 'Work with licensed tax professionals and Enrolled Agents.',
+    description: 'Work with professional accountants and Enrolled Agents.',
   },
   {
     icon: Clock,

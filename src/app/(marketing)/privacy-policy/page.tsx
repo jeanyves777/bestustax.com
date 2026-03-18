@@ -130,7 +130,7 @@ export default function PrivacyPolicyPage() {
               <li>Disable cookies through your browser settings</li>
             </ul>
             <p>
-              To exercise these rights, please contact us at privacy@bestustax.com.
+              To exercise these rights, please contact us at info@bestustax.com.
             </p>
 
             <h2>California Privacy Rights (CCPA)</h2>
@@ -166,10 +166,8 @@ export default function PrivacyPolicyPage() {
             </p>
             <p>
               <strong>BestUsTax Privacy Team</strong><br />
-              123 Tax Street, Suite 100<br />
-              Austin, TX 78701<br />
-              Email: privacy@bestustax.com<br />
-              Phone: (800) 555-1234
+              Email: info@bestustax.com<br />
+              Phone: +1 (413) 645-4619
             </p>
           </div>
         </div>

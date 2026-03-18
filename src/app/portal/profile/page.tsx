@@ -189,7 +189,7 @@ export default function ProfilePage() {
                   label="Phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="(555) 123-4567"
+                  placeholder="+1 (413) 645-4619"
                 />
                 <Input
                   label="Date of Birth"

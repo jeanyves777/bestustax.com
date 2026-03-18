@@ -7,7 +7,7 @@ import Link from 'next/link'
 export const metadata: Metadata = {
   title: 'IRS Audit Support & Representation | BestUsTax',
   description:
-    'Expert IRS audit representation and defense. Don\'t face the IRS alone. Our tax professionals and Enrolled Agents protect your rights.',
+    'Expert IRS audit representation and defense. Don\'t face the IRS alone. Our professional accountants and Enrolled Agents protect your rights.',
 }
 
 const auditTypes = [
@@ -87,7 +87,7 @@ export default function AuditSupportPage() {
               IRS <span className="gradient-text">Audit Support</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
-              Don't face the IRS alone. Our experienced tax professionals and Enrolled Agents provide
+              Don't face the IRS alone. Our experienced professional accountants and Enrolled Agents provide
               expert representation to protect your rights and resolve your case.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

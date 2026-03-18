@@ -16,7 +16,7 @@ const contactInfo = [
   {
     icon: Envelope,
     title: 'Email',
-    value: 'support@bestustax.com',
+    value: 'info@bestustax.com',
     description: 'We respond within 24 hours',
   },
   {
@@ -171,7 +171,7 @@ export default function ContactPage() {
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="(555) 123-4567"
+                      placeholder="+1 (413) 645-4619"
                     />
                     <div>
                       <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">

@@ -36,7 +36,7 @@ const benefits = [
   },
   {
     title: 'Expert Support',
-    description: 'Year-round access to experienced business tax professionals.',
+    description: 'Year-round access to experienced professional accountants.',
   },
 ]
 

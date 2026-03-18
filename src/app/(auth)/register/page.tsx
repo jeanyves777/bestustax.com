@@ -159,7 +159,7 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="(555) 123-4567"
+              placeholder="+1 (413) 645-4619"
             />
 
             <div className="relative">

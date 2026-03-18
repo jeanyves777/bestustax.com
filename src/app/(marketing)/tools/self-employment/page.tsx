@@ -179,7 +179,7 @@ export default function SelfEmploymentPage() {
           <p className="text-sm text-gray-500 dark:text-gray-400 text-center max-w-3xl mx-auto">
             This calculator provides estimates for federal self-employment taxes only.
             State taxes and local taxes are not included. Your actual tax liability may differ.
-            Consult with a qualified tax professional for accurate tax planning and filing.
+            Consult with a qualified professional accountant for accurate tax planning and filing.
           </p>
         </div>
       </section>
