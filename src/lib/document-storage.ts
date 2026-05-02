@@ -56,11 +56,15 @@ export async function readStoredDocument(filePath: string) {
   return readFile(resolveStoredDocumentPath(filePath))
 }
 
-export function documentDownloadHeaders(originalName: string, mimeType: string) {
+export function documentDownloadHeaders(
+  originalName: string,
+  mimeType: string,
+  disposition: 'attachment' | 'inline' = 'attachment'
+) {
   const safeName = originalName.replace(/"/g, '')
   return {
     'Content-Type': mimeType || 'application/octet-stream',
-    'Content-Disposition': `attachment; filename="${safeName}"`,
+    'Content-Disposition': `${disposition}; filename="${safeName}"`,
     'Cache-Control': 'private, no-store',
   }
 }

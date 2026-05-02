@@ -6,6 +6,33 @@ import { saveUploadedDocument } from '@/lib/document-storage'
 
 export const runtime = 'nodejs'
 
+function toAdminDocument(document: {
+  id: string
+  type: string
+  filename: string
+  originalName: string
+  fileSize: number
+  mimeType: string
+  description: string | null
+  year: number
+  status: string
+  createdAt: Date
+  updatedAt: Date
+  user: { id: string; name: string | null; email: string }
+  uploadedBy: { id: string; name: string | null; email: string }
+}) {
+  return {
+    ...document,
+    fileName: document.filename,
+    title: document.description || document.originalName,
+    fileType: document.mimeType,
+    category: document.type,
+    uploadedAt: document.createdAt.toISOString(),
+    createdAt: document.createdAt.toISOString(),
+    updatedAt: document.updatedAt.toISOString(),
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,8 +43,9 @@ export async function POST(request: Request) {
     const formData = await request.formData()
     const file = formData.get('file')
     const userId = formData.get('userId')?.toString()
-    const type = formData.get('type')?.toString() || 'other'
-    const description = formData.get('description')?.toString() || null
+    const type = formData.get('type')?.toString() || formData.get('category')?.toString() || 'other'
+    const description =
+      formData.get('description')?.toString() || formData.get('title')?.toString() || null
     const year = Number(formData.get('year')?.toString()) || new Date().getFullYear()
 
     if (!(file instanceof File)) {
@@ -65,7 +93,9 @@ export async function POST(request: Request) {
       },
     })
 
-    return NextResponse.json({ success: true, document }, { status: 201 })
+    const mappedDocument = toAdminDocument(document)
+
+    return NextResponse.json({ success: true, document: mappedDocument, ...mappedDocument }, { status: 201 })
   } catch (error) {
     console.error('Error uploading admin document:', error)
     return NextResponse.json(

@@ -3,6 +3,33 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
 
+function toAdminDocument(document: {
+  id: string
+  type: string
+  filename: string
+  originalName: string
+  fileSize: number
+  mimeType: string
+  description: string | null
+  year: number
+  status: string
+  createdAt: Date
+  updatedAt: Date
+  user: { id: string; name: string | null; email: string }
+  uploadedBy: { id: string; name: string | null; email: string }
+}) {
+  return {
+    ...document,
+    fileName: document.filename,
+    title: document.description || document.originalName,
+    fileType: document.mimeType,
+    category: document.type,
+    uploadedAt: document.createdAt.toISOString(),
+    createdAt: document.createdAt.toISOString(),
+    updatedAt: document.updatedAt.toISOString(),
+  }
+}
+
 export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions)
@@ -49,7 +76,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(
       {
-        documents,
+        documents: documents.map(toAdminDocument),
         stats: { total, thisMonth, byType },
       },
       { headers: { 'Cache-Control': 'no-store' } }

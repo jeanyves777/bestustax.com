@@ -19,9 +19,14 @@ export async function GET(
       return NextResponse.json({ error: 'Document not found' }, { status: 404 })
     }
 
+    const { searchParams } = new URL(request.url)
     const file = await readStoredDocument(document.filePath)
     return new NextResponse(file, {
-      headers: documentDownloadHeaders(document.originalName, document.mimeType),
+      headers: documentDownloadHeaders(
+        document.originalName,
+        document.mimeType,
+        searchParams.get('inline') === 'true' ? 'inline' : 'attachment'
+      ),
     })
   } catch (error) {
     console.error('Error downloading admin document:', error)

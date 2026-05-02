@@ -45,6 +45,8 @@ model User {
   advisorAppointments Appointment[]    @relation("AdvisorAppointments")
   documents         Document[]         @relation("ClientDocuments")
   uploadedDocuments Document[]         @relation("UploadedDocuments")
+  requestedSignatures SignatureRequest[] @relation("RequestedSignatures")
+  receivedSignatures  SignatureRequest[] @relation("ReceivedSignatures")
   taxReturns        TaxReturn[]        @relation("ClientTaxReturns")
   advisorTaxReturns TaxReturn[]        @relation("AdvisorTaxReturns")
   sentMessages      Message[]          @relation("SentMessages")
@@ -137,8 +139,40 @@ model Document {
   user              User      @relation("ClientDocuments", fields: [userId], references: [id])
   uploadedBy        User      @relation("UploadedDocuments", fields: [uploadedById], references: [id])
   rapidDocAccess    RapidDocAccess? @relation(fields: [rapidDocAccessId], references: [id])
+  signatureRequests SignatureRequest[]
   taxReturn         TaxReturn? @relation(fields: [taxReturnId], references: [id])
   taxReturnId       String?
+}
+
+model SignatureRequest {
+  id               String    @id @default(cuid())
+  documentId       String
+  requestedById    String
+  recipientId      String
+  fields           String
+  message          String?
+  accessToken      String    @unique
+  verificationCode String?
+  codeVerifiedAt   DateTime?
+  status           String    @default("pending") // pending, viewed, signed, expired, cancelled
+  signatures       String?
+  signedFileName   String?
+  signedFileUrl    String?
+  signedAt         DateTime?
+  expiresAt        DateTime?
+  ipAddress        String?
+  userAgent        String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  document         Document  @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  requestedBy      User      @relation("RequestedSignatures", fields: [requestedById], references: [id])
+  recipient        User      @relation("ReceivedSignatures", fields: [recipientId], references: [id])
+
+  @@index([documentId])
+  @@index([recipientId])
+  @@index([requestedById])
+  @@index([status])
 }
 
 model TaxReturn {
