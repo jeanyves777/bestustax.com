@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'IRS Audit Support & Representation | BestUsTax',
+  title: 'Best Audit Support | BestUSTax',
   description:
     'Expert IRS audit representation and defense. Don\'t face the IRS alone. Our professional accountants and Enrolled Agents protect your rights.',
 }
@@ -84,7 +84,7 @@ export default function AuditSupportPage() {
               Received an IRS Notice?
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              IRS <span className="gradient-text">Audit Support</span>
+              Best <span className="gradient-text">Audit Support</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               Don't face the IRS alone. Our experienced professional accountants and Enrolled Agents provide

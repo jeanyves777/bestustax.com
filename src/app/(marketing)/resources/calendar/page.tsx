@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 
 export const metadata: Metadata = {
-  title: 'Tax Calendar & Deadlines | BestUsTax',
+  title: 'Tax Calendar & Deadlines | BestUSTax',
   description:
     '2024 tax calendar with all important IRS deadlines. Never miss a filing deadline or estimated tax payment.',
 }

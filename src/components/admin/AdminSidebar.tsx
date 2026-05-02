@@ -87,7 +87,7 @@ export default function AdminSidebar({ user }: AdminSidebarProps) {
             <span className="text-white font-bold">BU</span>
           </div>
           <div>
-            <span className="font-bold text-lg">BestUsTax</span>
+            <span className="font-bold text-lg">BestUSTax</span>
             <span className="block text-xs text-gray-500">Admin Portal</span>
           </div>
         </Link>

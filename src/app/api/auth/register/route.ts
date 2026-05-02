@@ -79,7 +79,7 @@ export async function POST(request: Request) {
     })
 
     // Send verification email
-    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify?token=${verificationToken}`
+    const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${verificationToken}`
     const emailTemplate = getVerificationEmailTemplate(name, verificationUrl)
     await sendEmail({
       to: user.email,

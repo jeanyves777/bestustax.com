@@ -135,7 +135,7 @@ export default function RapidDocUploadPage() {
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-light-accent-primary to-light-success flex items-center justify-center">
                 <span className="text-white font-bold">BU</span>
               </div>
-              <span className="text-xl font-bold">BestUsTax</span>
+              <span className="text-xl font-bold">BestUSTax</span>
             </Link>
             <div className="flex items-center justify-center gap-2 mb-4">
               <Lightning weight="fill" className="w-8 h-8 text-light-accent-primary" />

@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Bookkeeping Services | BestUsTax',
+  title: 'Best Bookkeeping | BestUSTax',
   description:
     'Professional bookkeeping services for small businesses. Keep your books accurate and tax-ready year-round.',
 }
@@ -72,7 +72,7 @@ export default function BookkeepingPage() {
               Professional Bookkeeping
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Bookkeeping <span className="gradient-text">Services</span>
+              Best <span className="gradient-text">Bookkeeping</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               Keep your books accurate, organized, and tax-ready year-round.

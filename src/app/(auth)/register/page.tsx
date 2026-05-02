@@ -61,8 +61,8 @@ export default function RegisterPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
+          name: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
           phone: formData.phone,
           password: formData.password,
         }),
@@ -111,7 +111,7 @@ export default function RegisterPage() {
           <Link href="/" className="inline-block">
             <Image
               src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
-              alt="BestUsTax"
+              alt="BestUSTax"
               width={180}
               height={50}
               priority
@@ -159,7 +159,7 @@ export default function RegisterPage() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="+1 (413) 645-4619"
+              placeholder="+1 (413) 300-1147"
             />
 
             <div className="relative">

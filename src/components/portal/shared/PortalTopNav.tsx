@@ -115,7 +115,7 @@ export default function PortalTopNav({ user, role, basePath }: PortalTopNavProps
         <div className="lg:hidden flex items-center pl-12">
           <Image
             src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
-            alt="BestUsTax"
+            alt="BestUSTax"
             width={100}
             height={28}
             priority

@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | BestUsTax',
+  title: 'Terms of Service | BestUSTax',
   description:
-    'BestUsTax terms of service. Read our terms and conditions for using our tax preparation services.',
+    'BestUSTax terms of service. Read our terms and conditions for using our tax preparation services.',
 }
 
 export default function TermsOfServicePage() {
@@ -29,14 +29,14 @@ export default function TermsOfServicePage() {
           <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
             <h2>Agreement to Terms</h2>
             <p>
-              By accessing or using BestUsTax services, you agree to be bound by these Terms of
+              By accessing or using BestUSTax services, you agree to be bound by these Terms of
               Service and all applicable laws and regulations. If you do not agree with any of these
               terms, you are prohibited from using our services.
             </p>
 
             <h2>Description of Services</h2>
             <p>
-              BestUsTax provides online and in-person tax preparation services, including but not
+              BestUSTax provides online and in-person tax preparation services, including but not
               limited to:
             </p>
             <ul>
@@ -93,7 +93,7 @@ export default function TermsOfServicePage() {
 
             <h2>Electronic Filing Authorization</h2>
             <p>
-              By using our e-filing services, you authorize BestUsTax to:
+              By using our e-filing services, you authorize BestUSTax to:
             </p>
             <ul>
               <li>Electronically file your tax return with the IRS and applicable state agencies</li>
@@ -115,7 +115,7 @@ export default function TermsOfServicePage() {
 
             <h2>Indemnification</h2>
             <p>
-              You agree to indemnify and hold BestUsTax harmless from any claims, damages, or
+              You agree to indemnify and hold BestUSTax harmless from any claims, damages, or
               expenses arising from:
             </p>
             <ul>
@@ -128,7 +128,7 @@ export default function TermsOfServicePage() {
             <h2>Intellectual Property</h2>
             <p>
               All content on our website and in our applications, including text, graphics, logos,
-              and software, is the property of BestUsTax and is protected by copyright and
+              and software, is the property of BestUSTax and is protected by copyright and
               trademark laws. You may not reproduce, distribute, or create derivative works without
               our express written permission.
             </p>
@@ -178,9 +178,9 @@ export default function TermsOfServicePage() {
               If you have questions about these Terms of Service, please contact us at:
             </p>
             <p>
-              <strong>BestUsTax Legal Department</strong><br />
+              <strong>BestUSTax Legal Department</strong><br />
               Email: info@bestustax.com<br />
-              Phone: +1 (413) 645-4619
+              Phone: +1 (413) 300-1147
             </p>
 
             <h2>IRS Circular 230 Disclosure</h2>

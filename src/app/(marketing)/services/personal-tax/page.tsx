@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Personal Tax Filing Services',
+  title: 'Best Individual Tax | BestUSTax',
   description:
     'Expert individual tax preparation services. Maximize your refund with professional accountant support.',
 }
@@ -50,7 +50,7 @@ export default function PersonalTaxPage() {
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Personal <span className="gradient-text">Tax Filing</span>
+              Best <span className="gradient-text">Individual Tax</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               Expert tax preparation for individuals. Get your maximum refund
@@ -76,7 +76,7 @@ export default function PersonalTaxPage() {
       <section className="py-24 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
           <h2 className="text-4xl font-bold text-center mb-4">
-            Why Choose <span className="gradient-text">BestUsTax</span>
+            Why Choose <span className="gradient-text">BestUSTax</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
             We make tax filing simple, accurate, and stress-free.

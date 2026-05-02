@@ -160,7 +160,7 @@ export default function AdvisorSettingsPage() {
                   value={profile.phone}
                   onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                   leftIcon={<Phone />}
-                  placeholder="+1 (413) 645-4619"
+                  placeholder="+1 (413) 300-1147"
                 />
 
                 <div className="flex justify-end pt-4">

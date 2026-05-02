@@ -3,7 +3,7 @@ import { WithholdingCalculator } from '@/components/calculators/WithholdingCalcu
 import { CheckCircle, Info, Warning } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
-  title: 'W-4 Withholding Calculator | BestUsTax',
+  title: 'W-4 Withholding Calculator | BestUSTax',
   description:
     'Calculate your paycheck withholding and take-home pay. Adjust your W-4 to avoid owing taxes or getting too large a refund.',
 }

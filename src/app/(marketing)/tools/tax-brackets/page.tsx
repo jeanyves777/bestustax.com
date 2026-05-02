@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Card, { CardHeader, CardTitle, CardContent } from '@/components/ui/Card'
 
 export const metadata: Metadata = {
-  title: '2024 Federal Tax Brackets | BestUsTax',
+  title: '2024 Federal Tax Brackets | BestUSTax',
   description:
     'Complete 2024 federal income tax brackets and rates for all filing statuses. Standard deductions, capital gains rates, and more.',
 }

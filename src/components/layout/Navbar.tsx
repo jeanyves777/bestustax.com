@@ -17,27 +17,27 @@ const navigation: NavLink[] = [
     href: '/services',
     subLinks: [
       {
-        label: 'Personal Tax',
+        label: 'Best Individual Tax',
         href: '/services/personal-tax',
         description: 'Individual tax filing and optimization',
       },
       {
-        label: 'Business Tax',
+        label: 'Best Business Tax',
         href: '/services/business-tax',
         description: 'Business tax solutions and planning',
       },
       {
-        label: 'Tax Planning',
+        label: 'Best Tax Planning',
         href: '/services/tax-planning',
         description: 'Year-round strategic tax planning',
       },
       {
-        label: 'Audit Support',
+        label: 'Best Audit Support',
         href: '/services/audit-support',
         description: 'IRS audit assistance and representation',
       },
       {
-        label: 'Bookkeeping',
+        label: 'Best Bookkeeping',
         href: '/services/bookkeeping',
         description: 'Professional bookkeeping services',
       },

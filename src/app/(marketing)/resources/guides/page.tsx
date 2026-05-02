@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 
 export const metadata: Metadata = {
-  title: 'Tax Guides & Resources | BestUsTax',
+  title: 'Tax Guides & Resources | BestUSTax',
   description:
     'Free tax guides and educational resources to help you understand taxes, maximize deductions, and file with confidence.',
 }

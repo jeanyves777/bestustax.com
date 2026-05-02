@@ -83,7 +83,7 @@ function ResetPasswordForm() {
           <Link href="/" className="inline-block">
             <Image
               src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
-              alt="BestUsTax"
+              alt="BestUSTax"
               width={180}
               height={50}
               priority

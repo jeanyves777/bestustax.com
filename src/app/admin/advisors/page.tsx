@@ -351,7 +351,7 @@ function AdvisorModal({
             label="Phone"
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="+1 (413) 645-4619"
+            placeholder="+1 (413) 300-1147"
           />
           {!advisor && (
             <Input

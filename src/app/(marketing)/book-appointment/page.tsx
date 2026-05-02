@@ -256,7 +256,7 @@ export default function BookAppointmentPage() {
                 </div>
                 <div>
                   <span className="text-gray-500">Location:</span>
-                  <p className="font-medium">BestUsTax Office</p>
+                  <p className="font-medium">BestUSTax Office</p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@ export default function BookAppointmentPage() {
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-light-accent-primary to-light-success flex items-center justify-center">
                 <span className="text-white font-bold">BU</span>
               </div>
-              <span className="text-xl font-bold">BestUsTax</span>
+              <span className="text-xl font-bold">BestUSTax</span>
             </Link>
             <h1 className="text-4xl font-bold mb-2">Book an Appointment</h1>
             <p className="text-gray-600 dark:text-gray-400">
@@ -538,7 +538,7 @@ export default function BookAppointmentPage() {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+1 (413) 645-4619"
+                      placeholder="+1 (413) 300-1147"
                       leftIcon={<Phone />}
                       required
                     />
@@ -602,7 +602,7 @@ export default function BookAppointmentPage() {
 
           {/* Contact Info */}
           <div className="mt-8 text-center text-sm text-gray-500">
-            <p>Need immediate assistance? Call us at +1 (413) 645-4619</p>
+            <p>Need immediate assistance? Call us at +1 (413) 300-1147</p>
             <p className="mt-1">
               Office hours: Monday - Friday, 9:00 AM - 5:00 PM CT
             </p>

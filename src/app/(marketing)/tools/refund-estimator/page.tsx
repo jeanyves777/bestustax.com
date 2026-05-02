@@ -3,7 +3,7 @@ import { TaxCalculator } from '@/components/calculators/TaxCalculator'
 import { CheckCircle, Info } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
-  title: 'Tax Refund Estimator | BestUsTax',
+  title: 'Tax Refund Estimator | BestUSTax',
   description:
     'Estimate your federal tax refund for 2024. Free tax refund calculator with accurate 2024 tax brackets.',
 }

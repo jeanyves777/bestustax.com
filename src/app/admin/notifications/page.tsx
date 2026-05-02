@@ -24,7 +24,7 @@ interface Notification {
 }
 
 const initialNotifications: Notification[] = [
-  { id: '1', type: 'info', title: 'Welcome', message: 'Welcome to BestUsTax admin panel. Notifications will appear here.', time: 'Just now', read: false },
+  { id: '1', type: 'info', title: 'Welcome', message: 'Welcome to BestUSTax admin panel. Notifications will appear here.', time: 'Just now', read: false },
 ]
 
 export default function NotificationsPage() {

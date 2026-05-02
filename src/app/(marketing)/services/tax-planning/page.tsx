@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Tax Planning Services | BestUsTax',
+  title: 'Best Tax Planning | BestUSTax',
   description:
     'Strategic tax planning to minimize your tax liability year-round. Proactive strategies for individuals and businesses.',
 }
@@ -63,7 +63,7 @@ export default function TaxPlanningPage() {
               Proactive Tax Strategies
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Strategic <span className="gradient-text">Tax Planning</span>
+              Best <span className="gradient-text">Tax Planning</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               Don't just file taxes—plan for them. Our proactive tax planning strategies help you

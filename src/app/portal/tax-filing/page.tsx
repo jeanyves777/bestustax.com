@@ -577,7 +577,7 @@ export default function TaxFilingPage() {
                     'I have disclosed all sources of income for the tax year.',
                     'I have provided accurate documentation for all claimed deductions and credits.',
                     'I understand that I am responsible for the accuracy of the information on my tax return.',
-                    'I authorize BestUsTax to electronically file my tax return with the IRS.',
+                    'I authorize BestUSTax to electronically file my tax return with the IRS.',
                   ].map((declaration, index) => (
                     <label key={index} className="flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-light-accent-primary transition-colors">
                       <input

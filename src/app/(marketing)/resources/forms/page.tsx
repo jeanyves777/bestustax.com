@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Card, { CardContent } from '@/components/ui/Card'
 
 export const metadata: Metadata = {
-  title: 'Tax Forms & Documents | BestUsTax',
+  title: 'Tax Forms & Documents | BestUSTax',
   description:
     'Download IRS tax forms, schedules, and instructions. Find the forms you need to file your federal income tax return.',
 }

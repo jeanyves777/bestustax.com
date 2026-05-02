@@ -19,11 +19,11 @@ import Input from '@/components/ui/Input'
 
 const footerLinks = {
   services: [
-    { label: 'Personal Tax', href: '/services/personal-tax' },
-    { label: 'Business Tax', href: '/services/business-tax' },
-    { label: 'Tax Planning', href: '/services/tax-planning' },
-    { label: 'Audit Support', href: '/services/audit-support' },
-    { label: 'Bookkeeping', href: '/services/bookkeeping' },
+    { label: 'Best Individual Tax', href: '/services/personal-tax' },
+    { label: 'Best Business Tax', href: '/services/business-tax' },
+    { label: 'Best Tax Planning', href: '/services/tax-planning' },
+    { label: 'Best Audit Support', href: '/services/audit-support' },
+    { label: 'Best Bookkeeping', href: '/services/bookkeeping' },
   ],
   tools: [
     { label: 'Refund Estimator', href: '/tools/refund-estimator' },
@@ -129,7 +129,7 @@ export function Footer() {
               <div className="flex items-center gap-3 text-sm">
                 <Phone weight="bold" className="w-5 h-5 text-light-accent-primary dark:text-dark-accent-primary" />
                 <span className="text-gray-600 dark:text-gray-400">
-                  +1 (413) 645-4619
+                  +1 (413) 300-1147
                 </span>
               </div>
               <div className="flex items-center gap-3 text-sm">

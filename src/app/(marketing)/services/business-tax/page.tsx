@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Business Tax Services | BestUsTax',
+  title: 'Best Business Tax | BestUSTax',
   description:
     'Expert business tax preparation for corporations, LLCs, partnerships, and sole proprietors. Maximize deductions and minimize tax liability.',
 }
@@ -71,7 +71,7 @@ export default function BusinessTaxPage() {
               Trusted by 10,000+ Businesses
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Business <span className="gradient-text">Tax Services</span>
+              Best <span className="gradient-text">Business Tax</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               Professional tax preparation for businesses of all sizes. From sole proprietors
@@ -97,7 +97,7 @@ export default function BusinessTaxPage() {
       <section className="py-24 bg-white dark:bg-dark-bg-primary">
         <div className="container-custom">
           <h2 className="text-4xl font-bold text-center mb-4">
-            Why Choose <span className="gradient-text">BestUsTax</span>
+            Why Choose <span className="gradient-text">BestUSTax</span>
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
             We understand the unique challenges businesses face during tax season.

@@ -153,7 +153,7 @@ export default function AppointmentsPage() {
 
     const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//BestUsTax//Appointment//EN
+PRODID:-//BestUSTax//Appointment//EN
 METHOD:REQUEST
 BEGIN:VEVENT
 UID:${appointment.id}@bestustax.com
@@ -533,7 +533,7 @@ function CreateAppointmentModal({ onClose, onSuccess }: { onClose: () => void; o
                     label="Phone"
                     value={formData.clientPhone}
                     onChange={(e) => setFormData({ ...formData, clientPhone: e.target.value })}
-                    placeholder="+1 (413) 645-4619"
+                    placeholder="+1 (413) 300-1147"
                   />
                 </div>
               </div>

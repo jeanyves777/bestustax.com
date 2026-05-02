@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | BestUsTax',
+  title: 'Privacy Policy | BestUSTax',
   description:
-    'BestUsTax privacy policy. Learn how we collect, use, and protect your personal information.',
+    'BestUSTax privacy policy. Learn how we collect, use, and protect your personal information.',
 }
 
 export default function PrivacyPolicyPage() {
@@ -29,7 +29,7 @@ export default function PrivacyPolicyPage() {
           <div className="max-w-3xl mx-auto prose prose-lg dark:prose-invert">
             <h2>Introduction</h2>
             <p>
-              BestUsTax ("we," "our," or "us") is committed to protecting your privacy. This Privacy
+              BestUSTax ("we," "our," or "us") is committed to protecting your privacy. This Privacy
               Policy explains how we collect, use, disclose, and safeguard your information when you
               use our tax preparation services, website, and mobile applications.
             </p>
@@ -165,9 +165,9 @@ export default function PrivacyPolicyPage() {
               contact us at:
             </p>
             <p>
-              <strong>BestUsTax Privacy Team</strong><br />
+              <strong>BestUSTax Privacy Team</strong><br />
               Email: info@bestustax.com<br />
-              Phone: +1 (413) 645-4619
+              Phone: +1 (413) 300-1147
             </p>
           </div>
         </div>

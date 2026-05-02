@@ -13,7 +13,8 @@ import {
   SpinnerGap,
   CalendarBlank,
   CaretLeft,
-  CaretRight
+  CaretRight,
+  PencilSimple
 } from '@phosphor-icons/react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -51,6 +52,7 @@ export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
   const [showScheduleModal, setShowScheduleModal] = useState(false)
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null)
   const [filter, setFilter] = useState<'upcoming' | 'past' | 'all'>('upcoming')
 
   useEffect(() => {
@@ -266,6 +268,14 @@ export default function AppointmentsPage() {
                         <Button
                           size="sm"
                           variant="outline"
+                          leftIcon={<PencilSimple />}
+                          onClick={() => setEditingAppointment(appointment)}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
                           onClick={() => cancelAppointment(appointment.id)}
                         >
                           Cancel
@@ -289,6 +299,126 @@ export default function AppointmentsPage() {
           }}
         />
       )}
+
+      {/* Edit Modal */}
+      {editingAppointment && (
+        <EditAppointmentModal
+          appointment={editingAppointment}
+          onClose={() => setEditingAppointment(null)}
+          onSuccess={() => {
+            setEditingAppointment(null)
+            fetchAppointments()
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+function EditAppointmentModal({
+  appointment,
+  onClose,
+  onSuccess,
+}: {
+  appointment: Appointment
+  onClose: () => void
+  onSuccess: () => void
+}) {
+  const [service, setService] = useState(appointment.service)
+  const [date, setDate] = useState(appointment.date)
+  const [time, setTime] = useState(appointment.time)
+  const [notes, setNotes] = useState(appointment.notes || '')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSave = async () => {
+    setLoading(true)
+    setError('')
+    try {
+      const response = await fetch(`/api/portal/appointments/${appointment.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ service, date, time, notes }),
+      })
+
+      const data = await response.json()
+      if (!response.ok) {
+        setError(data.error || 'Failed to update appointment')
+        return
+      }
+      onSuccess()
+    } catch (err) {
+      setError('An unexpected error occurred')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <Card className="w-full max-w-lg">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <h2 className="text-xl font-bold">Edit Appointment</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="p-6 space-y-4">
+          {error && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm text-red-600 dark:text-red-400">
+              {error}
+            </div>
+          )}
+          <div>
+            <label className="block text-sm font-medium mb-2">Service</label>
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary"
+            >
+              {services.map((s) => (
+                <option key={s.id} value={s.name}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Date</label>
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Time</label>
+            <select
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary"
+            >
+              {timeSlots.map((slot) => (
+                <option key={slot} value={slot}>{slot}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Notes</label>
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={3}
+              className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-bg-secondary"
+            />
+          </div>
+        </div>
+        <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSave} disabled={loading}>
+            {loading ? <SpinnerGap className="w-4 h-4 animate-spin" /> : 'Save Changes'}
+          </Button>
+        </div>
+      </Card>
     </div>
   )
 }

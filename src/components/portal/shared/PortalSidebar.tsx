@@ -138,7 +138,7 @@ export default function PortalSidebar({ config }: PortalSidebarProps) {
           <Link href={config.basePath} className="flex items-center gap-3">
             <Image
               src={theme === 'dark' ? '/logos/logo-gold.svg' : '/logos/logo-blue.svg'}
-              alt="BestUsTax"
+              alt="BestUSTax"
               width={140}
               height={36}
               priority

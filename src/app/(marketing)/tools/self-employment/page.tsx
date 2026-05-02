@@ -3,7 +3,7 @@ import { SelfEmploymentCalculator } from '@/components/calculators/SelfEmploymen
 import { CheckCircle, Info, CalendarCheck } from '@phosphor-icons/react/dist/ssr'
 
 export const metadata: Metadata = {
-  title: 'Self-Employment Tax Calculator | BestUsTax',
+  title: 'Self-Employment Tax Calculator | BestUSTax',
   description:
     'Calculate your self-employment tax and quarterly estimated payments. Includes Social Security, Medicare, and income tax for freelancers and independent contractors.',
 }

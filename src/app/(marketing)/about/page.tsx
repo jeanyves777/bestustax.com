@@ -5,9 +5,9 @@ import Card from '@/components/ui/Card'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'About Us | BestUsTax',
+  title: 'About Us | BestUSTax',
   description:
-    'Learn about BestUsTax - our mission, values, and the team of professional accountants dedicated to helping you succeed.',
+    'Learn about BestUSTax - our mission, values, and the team of professional accountants dedicated to helping you succeed.',
 }
 
 const stats = [
@@ -49,7 +49,7 @@ const team = [
   {
     name: 'Enrolled Agents',
     role: 'IRS-Licensed Specialists',
-    bio: 'Enrolled Agents authorized by the IRS to represent taxpayers. Experts in business and individual taxation.',
+    bio: 'Enrolled Agent Admitted to Represent TaxPayers before the IRS. Experts in business and individual taxation.',
   },
   {
     name: 'Client Support',
@@ -81,7 +81,7 @@ export default function AboutPage() {
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              About <span className="gradient-text">BestUsTax</span>
+              About <span className="gradient-text">BestUSTax</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
               We're on a mission to make professional tax services accessible to everyone.
@@ -119,7 +119,7 @@ export default function AboutPage() {
             </h2>
             <div className="prose prose-lg dark:prose-invert max-w-none">
               <p className="text-gray-600 dark:text-gray-400 mb-6">
-                BestUsTax was founded with a simple but powerful mission: make professional tax
+                BestUSTax was founded with a simple but powerful mission: make professional tax
                 services accessible, affordable, and stress-free for everyday Americans.
               </p>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -220,10 +220,10 @@ export default function AboutPage() {
       <section className="py-24 bg-gradient-to-r from-light-accent-primary to-light-success dark:from-dark-accent-primary dark:to-dark-success">
         <div className="container-custom text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Experience the BestUsTax Difference?
+            Ready to Experience the BestUSTax Difference?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Experience the BestUsTax difference. Professional tax preparation
+            Experience the BestUSTax difference. Professional tax preparation
             with a personal touch. Schedule a free consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
