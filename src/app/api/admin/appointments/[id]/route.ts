@@ -14,7 +14,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { status, date, time, type, notes, advisorId } = body
+    const { status, date, time, type, duration, location, notes, advisorId } = body
 
     const updated = await prisma.appointment.update({
       where: { id: params.id },
@@ -23,8 +23,18 @@ export async function PUT(
         ...(date ? { date: new Date(date) } : {}),
         ...(time ? { time } : {}),
         ...(type ? { type } : {}),
+        ...(duration !== undefined ? { duration: Number(duration) } : {}),
+        ...(location !== undefined ? { location } : {}),
         ...(notes !== undefined ? { notes } : {}),
-        ...(advisorId !== undefined ? { advisorId } : {}),
+        ...(advisorId !== undefined ? { advisorId: advisorId || null } : {}),
+      },
+      include: {
+        client: {
+          select: { id: true, name: true, email: true, phone: true },
+        },
+        advisor: {
+          select: { id: true, name: true, email: true },
+        },
       },
     })
 
@@ -38,7 +48,15 @@ export async function PUT(
       },
     })
 
-    return NextResponse.json({ success: true, appointment: updated })
+    return NextResponse.json({
+      success: true,
+      appointment: {
+        ...updated,
+        date: updated.date.toISOString().split('T')[0],
+        createdAt: updated.createdAt.toISOString(),
+        updatedAt: updated.updatedAt.toISOString(),
+      },
+    })
   } catch (error) {
     console.error('Error updating appointment:', error)
     return NextResponse.json({ error: 'Failed to update appointment' }, { status: 500 })
