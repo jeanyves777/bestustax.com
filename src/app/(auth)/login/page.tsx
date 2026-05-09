@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, Suspense } from 'react'
-import { signIn } from 'next-auth/react'
+import { signIn, getSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -45,7 +45,23 @@ function LoginForm() {
           setError(result.error)
         }
       } else if (result?.ok) {
-        router.push(callbackUrl)
+        // Redirect based on role unless a specific callbackUrl was provided
+        const hasExplicitCallback = searchParams.get('callbackUrl')
+        if (hasExplicitCallback) {
+          router.push(callbackUrl)
+        } else {
+          const session = await getSession()
+          const role = (session?.user as any)?.role
+          if (role === 'admin') {
+            router.push('/admin')
+          } else if (role === 'advisor') {
+            router.push('/advisor')
+          } else if (role === 'partner') {
+            router.push('/partner')
+          } else {
+            router.push('/portal')
+          }
+        }
         router.refresh()
       }
     } catch (err) {
