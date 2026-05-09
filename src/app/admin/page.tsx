@@ -1,28 +1,33 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
-import { CurrencyDollar, Users, Calendar, FileText, TrendUp, ArrowRight } from '@phosphor-icons/react/dist/ssr'
+import { Users, Calendar, FileText, TrendUp, ArrowRight, UserCheck, Briefcase } from '@phosphor-icons/react/dist/ssr'
 import Link from 'next/link'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 
 async function getStats() {
   const now = new Date()
-  const startOfYear = new Date(now.getFullYear(), 0, 1)
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
   const [
     totalClients,
     activeClients,
+    totalAdvisors,
+    totalPartners,
     pendingAppointments,
     upcomingAppointments,
     documentsThisMonth,
+    totalTaxReturns,
     taxReturnsInProgress,
+    newClientsThisMonth,
     recentActivities,
     todayAppointments,
   ] = await Promise.all([
     prisma.user.count({ where: { role: 'client' } }),
     prisma.user.count({ where: { role: 'client', status: 'active' } }),
+    prisma.user.count({ where: { role: 'advisor' } }),
+    prisma.user.count({ where: { role: 'partner' } }),
     prisma.appointment.count({ where: { status: 'scheduled' } }),
     prisma.appointment.count({
       where: {
@@ -33,8 +38,12 @@ async function getStats() {
     prisma.document.count({
       where: { createdAt: { gte: startOfMonth } },
     }),
+    prisma.taxReturn.count(),
     prisma.taxReturn.count({
       where: { status: { in: ['draft', 'in-review'] } },
+    }),
+    prisma.user.count({
+      where: { role: 'client', createdAt: { gte: startOfMonth } },
     }),
     prisma.activityLog.findMany({
       take: 10,
@@ -57,10 +66,14 @@ async function getStats() {
   return {
     totalClients,
     activeClients,
+    totalAdvisors,
+    totalPartners,
     pendingAppointments,
     upcomingAppointments,
     documentsThisMonth,
+    totalTaxReturns,
     taxReturnsInProgress,
+    newClientsThisMonth,
     recentActivities,
     todayAppointments,
   }
@@ -72,18 +85,18 @@ export default async function AdminDashboard() {
 
   const statCards = [
     {
-      title: 'Total Revenue',
-      value: '$125,430',
-      change: '+12.5%',
-      changeType: 'positive',
-      icon: CurrencyDollar,
-      href: '/admin/analytics',
+      title: 'Tax Returns',
+      value: stats.totalTaxReturns.toString(),
+      change: `${stats.taxReturnsInProgress} in progress`,
+      changeType: 'neutral',
+      icon: FileText,
+      href: '/admin/tax-returns',
     },
     {
       title: 'Active Clients',
       value: stats.activeClients.toString(),
-      change: `${stats.totalClients} total`,
-      changeType: 'neutral',
+      change: `+${stats.newClientsThisMonth} this month`,
+      changeType: stats.newClientsThisMonth > 0 ? 'positive' : 'neutral',
       icon: Users,
       href: '/admin/users',
     },
@@ -103,6 +116,12 @@ export default async function AdminDashboard() {
       icon: FileText,
       href: '/admin/documents',
     },
+  ]
+
+  const userStatsCards = [
+    { title: 'Clients', value: stats.totalClients, icon: Users, color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400', href: '/admin/users?role=client' },
+    { title: 'Advisors', value: stats.totalAdvisors, icon: UserCheck, color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400', href: '/admin/advisors' },
+    { title: 'Partners', value: stats.totalPartners, icon: Briefcase, color: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400', href: '/admin/partners' },
   ]
 
   return (
@@ -136,6 +155,25 @@ export default async function AdminDashboard() {
               {stat.changeType === 'neutral' && (
                 <div className="text-xs text-gray-500 mt-1">{stat.change}</div>
               )}
+            </Card>
+          </Link>
+        ))}
+      </div>
+
+      {/* User Breakdown */}
+      <div className="grid grid-cols-3 gap-4 mb-8">
+        {userStatsCards.map((card) => (
+          <Link key={card.title} href={card.href}>
+            <Card hover className="p-4">
+              <div className="flex items-center gap-3">
+                <div className={`p-2 rounded-lg ${card.color}`}>
+                  <card.icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-2xl font-bold">{card.value}</div>
+                  <div className="text-sm text-gray-500">{card.title}</div>
+                </div>
+              </div>
             </Card>
           </Link>
         ))}

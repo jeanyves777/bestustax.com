@@ -198,6 +198,8 @@ export default function AppointmentsPage() {
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
+  const [upcomingFilter, setUpcomingFilter] = useState<'today' | 'week' | 'month' | 'all'>('week')
   const [stats, setStats] = useState({
     total: 0,
     upcoming: 0,
@@ -226,6 +228,36 @@ export default function AppointmentsPage() {
       .filter((appointment) => visibleKeys.has(appointment.date))
       .sort((a, b) => parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time))
   }, [appointments, visibleDays])
+
+  const upcomingFiltered = useMemo(() => {
+    const now = new Date()
+    const todayStr = toDateKey(now)
+    const currentMins = now.getHours() * 60 + now.getMinutes()
+    const endOfWeekStr = toDateKey(addDays(startOfWeek(now), 7))
+    const endOfMonthStr = toDateKey(new Date(now.getFullYear(), now.getMonth() + 1, 0))
+
+    return appointments
+      .filter((a) => {
+        if (a.status === 'cancelled' || a.status === 'completed') return false
+        if (upcomingFilter === 'today') {
+          if (a.date !== todayStr) return false
+          return parseTimeToMinutes(a.time) >= currentMins
+        }
+        if (a.date > todayStr) {
+          if (upcomingFilter === 'week') return a.date <= endOfWeekStr
+          if (upcomingFilter === 'month') return a.date <= endOfMonthStr
+          return true
+        }
+        if (a.date === todayStr) {
+          return parseTimeToMinutes(a.time) >= currentMins
+        }
+        return false
+      })
+      .sort((a, b) => {
+        if (a.date !== b.date) return a.date.localeCompare(b.date)
+        return parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time)
+      })
+  }, [appointments, upcomingFilter])
 
   const visibleRangeLabel = useMemo(() => {
     if (calendarMode === 'today') {
@@ -356,8 +388,8 @@ export default function AppointmentsPage() {
   }
 
   const cancelAppointment = async (id: string) => {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return
     await updateAppointment(id, { status: 'cancelled' })
+    setShowCancelConfirm(false)
   }
 
   const downloadICS = (appointment: Appointment) => {
@@ -555,24 +587,40 @@ END:VCALENDAR`
 
         <Card className="overflow-hidden">
           <div className="border-b border-gray-200 p-4 dark:border-gray-800">
-            <h2 className="text-lg font-semibold">Appointments in View</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {calendarAppointments.length} appointment{calendarAppointments.length === 1 ? '' : 's'}
-            </p>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <h2 className="text-lg font-semibold">Upcoming Appointments</h2>
+              <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-dark-bg-tertiary text-xs">
+                {(['today', 'week', 'month', 'all'] as const).map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setUpcomingFilter(f)}
+                    className={`rounded-md px-2.5 py-1 font-medium capitalize transition-colors ${
+                      upcomingFilter === f
+                        ? 'bg-white text-light-accent-primary shadow-sm dark:bg-dark-bg-secondary dark:text-dark-accent-primary'
+                        : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white'
+                    }`}
+                  >
+                    {f === 'week' ? 'This Week' : f === 'month' ? 'This Month' : f.charAt(0).toUpperCase() + f.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <p className="mt-1 text-sm text-gray-500">{upcomingFiltered.length} upcoming</p>
           </div>
 
           <div className="max-h-[720px] overflow-y-auto p-4">
-            {calendarAppointments.length === 0 ? (
+            {upcomingFiltered.length === 0 ? (
               <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-                No appointments for this calendar view.
+                No upcoming appointments for this period.
               </div>
             ) : (
               <div className="space-y-3">
-                {calendarAppointments.map((appointment) => (
+                {upcomingFiltered.map((appointment) => (
                   <AppointmentListItem
                     key={appointment.id}
                     appointment={appointment}
-                    onOpen={() => setSelectedAppointment(appointment)}
+                    onOpen={() => { setShowCancelConfirm(false); setSelectedAppointment(appointment) }}
                     onConfirm={() => confirmAppointment(appointment.id)}
                     onDownload={() => downloadICS(appointment)}
                     actionLoading={actionLoading}
@@ -647,7 +695,7 @@ END:VCALENDAR`
                             )}
                           </Button>
                         )}
-                        <Button size="sm" variant="outline" onClick={() => setSelectedAppointment(appointment)}>
+                        <Button size="sm" variant="outline" onClick={() => { setShowCancelConfirm(false); setSelectedAppointment(appointment) }}>
                           <PencilSimple className="h-4 w-4" />
                         </Button>
                         <Button size="sm" variant="ghost" onClick={() => downloadICS(appointment)}>
@@ -679,12 +727,15 @@ END:VCALENDAR`
           appointment={selectedAppointment}
           advisors={advisors}
           actionLoading={actionLoading}
-          onClose={() => setSelectedAppointment(null)}
+          showCancelConfirm={showCancelConfirm}
+          onClose={() => { setSelectedAppointment(null); setShowCancelConfirm(false) }}
           onSave={updateAppointment}
           onConfirm={confirmAppointment}
           onComplete={(id) => updateAppointment(id, { status: 'completed' })}
           onCancel={cancelAppointment}
           onDownload={downloadICS}
+          onRequestCancel={() => setShowCancelConfirm(true)}
+          onAbortCancel={() => setShowCancelConfirm(false)}
         />
       )}
     </div>
@@ -942,23 +993,30 @@ function ManageAppointmentModal({
   appointment,
   advisors,
   actionLoading,
+  showCancelConfirm,
   onClose,
   onSave,
   onConfirm,
   onComplete,
   onCancel,
   onDownload,
+  onRequestCancel,
+  onAbortCancel,
 }: {
   appointment: Appointment
   advisors: Advisor[]
   actionLoading: string | null
+  showCancelConfirm: boolean
   onClose: () => void
   onSave: (id: string, payload: Record<string, unknown>) => void
   onConfirm: (id: string) => void
   onComplete: (id: string) => void
   onCancel: (id: string) => void
   onDownload: (appointment: Appointment) => void
+  onRequestCancel: () => void
+  onAbortCancel: () => void
 }) {
+  const [mode, setMode] = useState<'view' | 'edit'>('view')
   const [formData, setFormData] = useState({
     date: appointment.date,
     time: appointment.time,
@@ -971,13 +1029,16 @@ function ManageAppointmentModal({
   })
 
   const isSaving = actionLoading === appointment.id
+  const isPast = parseDateOnly(appointment.date) < new Date(new Date().toDateString())
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
       <Card className="max-h-[92vh] w-full max-w-3xl overflow-y-auto">
         <div className="flex items-start justify-between gap-4 border-b border-gray-200 bg-light-accent-primary p-5 text-white dark:border-gray-800 dark:bg-dark-accent-primary">
           <div>
-            <h2 className="text-xl font-bold">Manage Appointment</h2>
+            <h2 className="text-xl font-bold">
+              {mode === 'edit' ? 'Reschedule / Edit' : 'Manage Appointment'}
+            </h2>
             <p className="text-sm text-white/80">{appointment.client.name || appointment.client.email}</p>
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 hover:bg-white/15">
@@ -985,151 +1046,210 @@ function ManageAppointmentModal({
           </button>
         </div>
 
-        <div className="space-y-6 p-5">
+        <div className="space-y-5 p-5">
+          {/* Past Appointment Warning */}
+          {isPast && appointment.status !== 'completed' && appointment.status !== 'cancelled' && (
+            <div className="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30">
+              <Warning className="h-5 w-5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
+              <div>
+                <div className="font-medium text-amber-800 dark:text-amber-300">Past Appointment</div>
+                <p className="text-sm text-amber-600 dark:text-amber-400">This appointment date has passed. You can mark it as completed or cancelled.</p>
+              </div>
+            </div>
+          )}
+
+          {/* Client Info */}
           <div className="grid gap-3 md:grid-cols-3">
             <InfoLine icon={<User />} label="Client" value={appointment.client.name || 'N/A'} />
             <InfoLine icon={<EnvelopeSimple />} label="Email" value={appointment.client.email} />
             <InfoLine icon={<Phone />} label="Phone" value={appointment.client.phone || 'N/A'} />
           </div>
 
-          <form
-            className="grid gap-4 md:grid-cols-2"
-            onSubmit={(event) => {
-              event.preventDefault()
-              onSave(appointment.id, {
-                date: formData.date,
-                time: formData.time,
-                duration: formData.duration,
-                type: formData.type,
-                status: formData.status,
-                location: formData.location,
-                advisorId: formData.advisorId,
-                notes: formData.notes,
-              })
-            }}
-          >
-            <Input
-              label="Date"
-              type="date"
-              value={formData.date}
-              onChange={(event) => setFormData({ ...formData, date: event.target.value })}
-            />
+          {mode === 'view' ? (
+            <>
+              {/* Appointment Details (read-only) */}
+              <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-800">
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="font-semibold">{getServiceLabel(appointment.type)}</h3>
+                  <StatusBadge status={appointment.status} />
+                </div>
+                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <CalendarBlank className="h-4 w-4" />
+                    <span>{formatDisplayDate(appointment.date, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    <span>{appointment.time} &bull; {appointment.duration} min</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4" />
+                    <span>{appointment.location || 'Virtual / Remote Consultation'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span>Advisor: {appointment.advisor?.name || <span className="text-amber-500">Unassigned</span>}</span>
+                  </div>
+                  {appointment.notes && (
+                    <div className="mt-2 rounded bg-gray-50 p-2 dark:bg-dark-bg-tertiary">
+                      <strong>Notes:</strong> {appointment.notes}
+                    </div>
+                  )}
+                </div>
+              </div>
 
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Time</label>
-              <select
-                value={formData.time}
-                onChange={(event) => setFormData({ ...formData, time: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-              >
-                {timeSlots.map((time) => (
-                  <option key={time} value={time}>
-                    {time}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Service</label>
-              <select
-                value={formData.type}
-                onChange={(event) => {
-                  const service = serviceTypes.find((item) => item.value === event.target.value)
-                  setFormData({ ...formData, type: event.target.value, duration: service?.duration || formData.duration })
-                }}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-              >
-                {serviceTypes.map((service) => (
-                  <option key={service.value} value={service.value}>
-                    {service.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <Input
-              label="Duration"
-              type="number"
-              min={15}
-              step={15}
-              value={formData.duration}
-              onChange={(event) => setFormData({ ...formData, duration: Number(event.target.value) })}
-            />
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
-              <select
-                value={formData.status}
-                onChange={(event) => setFormData({ ...formData, status: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-              >
-                <option value="scheduled">Scheduled</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Advisor</label>
-              <select
-                value={formData.advisorId}
-                onChange={(event) => setFormData({ ...formData, advisorId: event.target.value })}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-              >
-                <option value="">Unassigned</option>
-                {advisors.map((advisor) => (
-                  <option key={advisor.id} value={advisor.id}>
-                    {advisor.name || advisor.email}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="md:col-span-2">
-              <Input
-                label="Location"
-                value={formData.location}
-                onChange={(event) => setFormData({ ...formData, location: event.target.value })}
-                leftIcon={<MapPin />}
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
-              <textarea
-                value={formData.notes}
-                onChange={(event) => setFormData({ ...formData, notes: event.target.value })}
-                rows={4}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-light-accent-primary dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100 dark:focus:ring-dark-accent-primary"
-              />
-            </div>
-
-            <div className="flex flex-wrap gap-2 md:col-span-2">
-              <Button type="submit" disabled={isSaving} leftIcon={isSaving ? <SpinnerGap className="animate-spin" /> : <Check />}>
-                Save Changes
-              </Button>
-              {appointment.status === 'scheduled' && (
-                <Button type="button" variant="outline" onClick={() => onConfirm(appointment.id)} disabled={isSaving}>
-                  Confirm
-                </Button>
+              {/* Action Buttons */}
+              {showCancelConfirm ? (
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-900/50 dark:bg-red-950/30">
+                    <Warning className="h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400" />
+                    <div>
+                      <div className="font-medium text-red-800 dark:text-red-300">Cancel this appointment?</div>
+                      <p className="text-sm text-red-600 dark:text-red-400">This will mark the appointment as cancelled. The client may be notified.</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button variant="outline" onClick={onAbortCancel} className="flex-1" disabled={isSaving}>
+                      Keep Appointment
+                    </Button>
+                    <Button variant="danger" onClick={() => onCancel(appointment.id)} className="flex-1" disabled={isSaving}
+                      leftIcon={isSaving ? <SpinnerGap className="animate-spin" /> : undefined}>
+                      {isSaving ? 'Cancelling...' : 'Yes, Cancel It'}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {/* Mark Complete for past appointments */}
+                  {isPast && appointment.status !== 'completed' && appointment.status !== 'cancelled' && (
+                    <Button
+                      className="w-full"
+                      onClick={() => onComplete(appointment.id)}
+                      disabled={isSaving}
+                      leftIcon={isSaving ? <SpinnerGap className="animate-spin" /> : <Check weight="bold" />}
+                    >
+                      {isSaving ? 'Updating...' : 'Mark as Completed'}
+                    </Button>
+                  )}
+                  {/* Confirm for scheduled appointments */}
+                  {appointment.status === 'scheduled' && !isPast && (
+                    <Button
+                      className="w-full"
+                      onClick={() => onConfirm(appointment.id)}
+                      disabled={isSaving}
+                      leftIcon={isSaving ? <SpinnerGap className="animate-spin" /> : <Check weight="bold" />}
+                    >
+                      {isSaving ? 'Confirming...' : 'Confirm Appointment'}
+                    </Button>
+                  )}
+                  <div className="grid grid-cols-3 gap-2">
+                    <Button variant="outline" onClick={() => setMode('edit')} leftIcon={<PencilSimple />}>
+                      Reschedule
+                    </Button>
+                    <Button variant="outline" onClick={() => onDownload(appointment)} leftIcon={<CalendarBlank />}>
+                      Add to Cal
+                    </Button>
+                    {appointment.status !== 'cancelled' && appointment.status !== 'completed' && (
+                      <Button variant="danger" onClick={onRequestCancel} leftIcon={<X />}>
+                        Cancel
+                      </Button>
+                    )}
+                    {appointment.status === 'completed' && (
+                      <Button variant="outline" onClick={() => onComplete(appointment.id)} disabled={isSaving}>
+                        Mark Complete
+                      </Button>
+                    )}
+                  </div>
+                </div>
               )}
-              {appointment.status !== 'completed' && appointment.status !== 'cancelled' && (
-                <Button type="button" variant="outline" onClick={() => onComplete(appointment.id)} disabled={isSaving}>
-                  Complete
+            </>
+          ) : (
+            /* Edit / Reschedule Form */
+            <form
+              className="grid gap-4 md:grid-cols-2"
+              onSubmit={(event) => {
+                event.preventDefault()
+                onSave(appointment.id, {
+                  date: formData.date,
+                  time: formData.time,
+                  duration: formData.duration,
+                  type: formData.type,
+                  status: formData.status,
+                  location: formData.location,
+                  advisorId: formData.advisorId,
+                  notes: formData.notes,
+                })
+              }}
+            >
+              <Input label="Date" type="date" value={formData.date}
+                onChange={(e) => setFormData({ ...formData, date: e.target.value })} />
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Time</label>
+                <select value={formData.time} onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
+                  {timeSlots.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Service</label>
+                <select value={formData.type} onChange={(e) => {
+                  const svc = serviceTypes.find((s) => s.value === e.target.value)
+                  setFormData({ ...formData, type: e.target.value, duration: svc?.duration || formData.duration })
+                }} className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
+                  {serviceTypes.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+                </select>
+              </div>
+
+              <Input label="Duration (min)" type="number" min={15} step={15} value={formData.duration}
+                onChange={(e) => setFormData({ ...formData, duration: Number(e.target.value) })} />
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+                <select value={formData.status} onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
+                  <option value="scheduled">Scheduled</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Advisor</label>
+                <select value={formData.advisorId} onChange={(e) => setFormData({ ...formData, advisorId: e.target.value })}
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
+                  <option value="">Unassigned</option>
+                  {advisors.map((a) => <option key={a.id} value={a.id}>{a.name || a.email}</option>)}
+                </select>
+              </div>
+
+              <div className="md:col-span-2">
+                <Input label="Location" value={formData.location}
+                  onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                  leftIcon={<MapPin />} />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+                <textarea value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  rows={4} className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-light-accent-primary dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100 dark:focus:ring-dark-accent-primary" />
+              </div>
+
+              <div className="flex flex-wrap gap-2 md:col-span-2">
+                <Button type="submit" disabled={isSaving} leftIcon={isSaving ? <SpinnerGap className="animate-spin" /> : <Check />}>
+                  {isSaving ? 'Saving...' : 'Save Changes'}
                 </Button>
-              )}
-              <Button type="button" variant="ghost" onClick={() => onDownload(appointment)}>
-                Download ICS
-              </Button>
-              {appointment.status !== 'cancelled' && (
-                <Button type="button" variant="danger" onClick={() => onCancel(appointment.id)} disabled={isSaving}>
-                  Cancel Appointment
+                <Button type="button" variant="outline" onClick={() => setMode('view')}>
+                  Back to Details
                 </Button>
-              )}
-            </div>
-          </form>
+                <Button type="button" variant="ghost" onClick={() => onDownload(appointment)}>
+                  Download ICS
+                </Button>
+              </div>
+            </form>
+          )}
         </div>
       </Card>
     </div>
