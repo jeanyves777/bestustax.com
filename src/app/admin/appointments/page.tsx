@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Calendar,
   CalendarBlank,
@@ -88,6 +88,19 @@ const statusColors: Record<string, string> = {
   completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
   cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
 }
+
+const ADVISOR_COLORS = [
+  { bg: 'bg-orange-100', border: 'border-l-orange-500', text: 'text-orange-800', dot: 'bg-orange-500', chip: 'bg-orange-100 text-orange-800 border-orange-400' },
+  { bg: 'bg-emerald-100', border: 'border-l-emerald-500', text: 'text-emerald-800', dot: 'bg-emerald-500', chip: 'bg-emerald-100 text-emerald-800 border-emerald-400' },
+  { bg: 'bg-rose-100', border: 'border-l-rose-500', text: 'text-rose-800', dot: 'bg-rose-500', chip: 'bg-rose-100 text-rose-800 border-rose-400' },
+  { bg: 'bg-amber-100', border: 'border-l-amber-500', text: 'text-amber-800', dot: 'bg-amber-500', chip: 'bg-amber-100 text-amber-800 border-amber-400' },
+  { bg: 'bg-teal-100', border: 'border-l-teal-500', text: 'text-teal-800', dot: 'bg-teal-500', chip: 'bg-teal-100 text-teal-800 border-teal-400' },
+  { bg: 'bg-fuchsia-100', border: 'border-l-fuchsia-500', text: 'text-fuchsia-800', dot: 'bg-fuchsia-500', chip: 'bg-fuchsia-100 text-fuchsia-800 border-fuchsia-400' },
+]
+
+const CALENDAR_START_HOUR = 9
+const CALENDAR_END_HOUR = 20
+const HOUR_HEIGHT = 64 // px per hour
 
 const modeLabels: Record<CalendarMode, string> = {
   today: 'Today',
@@ -199,7 +212,9 @@ export default function AppointmentsPage() {
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
-  const [upcomingFilter, setUpcomingFilter] = useState<'today' | 'week' | 'month' | 'all'>('week')
+  const [upcomingFilter, setUpcomingFilter] = useState<'week' | 'month' | 'all'>('week')
+  const [isUpcomingCollapsed, setIsUpcomingCollapsed] = useState(false)
+  const [selectedAdvisorIds, setSelectedAdvisorIds] = useState<Set<string>>(new Set(['all']))
   const [stats, setStats] = useState({
     total: 0,
     upcoming: 0,
@@ -239,10 +254,6 @@ export default function AppointmentsPage() {
     return appointments
       .filter((a) => {
         if (a.status === 'cancelled' || a.status === 'completed') return false
-        if (upcomingFilter === 'today') {
-          if (a.date !== todayStr) return false
-          return parseTimeToMinutes(a.time) >= currentMins
-        }
         if (a.date > todayStr) {
           if (upcomingFilter === 'week') return a.date <= endOfWeekStr
           if (upcomingFilter === 'month') return a.date <= endOfMonthStr
@@ -258,6 +269,22 @@ export default function AppointmentsPage() {
         return parseTimeToMinutes(a.time) - parseTimeToMinutes(b.time)
       })
   }, [appointments, upcomingFilter])
+
+  const getAdvisorColor = (advisorId: string | null) => {
+    if (!advisorId) return { bg: 'bg-indigo-100', border: 'border-l-indigo-500', text: 'text-indigo-800', dot: 'bg-indigo-500', chip: 'bg-indigo-100 text-indigo-800 border-indigo-400' }
+    const index = advisors.findIndex((a) => a.id === advisorId)
+    if (index === -1) return ADVISOR_COLORS[0]
+    return ADVISOR_COLORS[index % ADVISOR_COLORS.length]
+  }
+
+  const filteredCalendarAppointments = useMemo(() => {
+    if (selectedAdvisorIds.has('all')) return calendarAppointments
+    return calendarAppointments.filter((apt) => {
+      if (!apt.advisor && selectedAdvisorIds.has('unassigned')) return true
+      if (apt.advisor && selectedAdvisorIds.has(apt.advisor.id)) return true
+      return false
+    })
+  }, [calendarAppointments, selectedAdvisorIds])
 
   const visibleRangeLabel = useMemo(() => {
     if (calendarMode === 'today') {
@@ -430,17 +457,23 @@ END:VCALENDAR`
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Appointments</h1>
           <p className="mt-1 text-gray-600 dark:text-gray-400">
-            Calendar, client requests, advisor assignments, and appointment actions.
+            View and manage all scheduled appointments
           </p>
         </div>
-        <Button onClick={() => setShowCreateModal(true)} leftIcon={<Plus weight="bold" />} glow>
-          Create Appointment
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => {}} leftIcon={<Clock />}>
+            Block Time
+          </Button>
+          <Button onClick={() => setShowCreateModal(true)} leftIcon={<Plus weight="bold" />} glow>
+            Create Appointment
+          </Button>
+        </div>
       </div>
 
       {error && (
@@ -450,44 +483,34 @@ END:VCALENDAR`
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-6">
-        <StatBox label="Total" value={stats.total} />
-        <StatBox label="Upcoming" value={stats.upcoming} tone="text-amber-600 dark:text-amber-300" />
-        <StatBox label="Scheduled" value={stats.scheduled} tone="text-orange-600 dark:text-orange-300" />
-        <StatBox label="Confirmed" value={stats.confirmed} tone="text-emerald-600 dark:text-emerald-300" />
-        <StatBox label="Completed" value={stats.completed} tone="text-blue-600 dark:text-blue-300" />
-        <StatBox label="Cancelled" value={stats.cancelled} tone="text-red-600 dark:text-red-300" />
+      {/* 4 Stat Cards */}
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard icon={<Calendar className="h-5 w-5" />} label="Total" value={stats.total} color="text-gray-700 dark:text-gray-200" iconBg="bg-blue-100 dark:bg-blue-900/30" iconColor="text-blue-600" />
+        <StatCard icon={<Clock className="h-5 w-5" />} label="Upcoming" value={stats.upcoming} color="text-gray-700 dark:text-gray-200" iconBg="bg-amber-100 dark:bg-amber-900/30" iconColor="text-amber-600" />
+        <StatCard icon={<Check className="h-5 w-5" />} label="Confirmed" value={stats.confirmed} color="text-emerald-600 dark:text-emerald-400" iconBg="bg-emerald-100 dark:bg-emerald-900/30" iconColor="text-emerald-600" />
+        <StatCard icon={<X className="h-5 w-5" />} label="Cancelled" value={stats.cancelled} color="text-red-600 dark:text-red-400" iconBg="bg-red-100 dark:bg-red-900/30" iconColor="text-red-600" />
       </div>
 
+      {/* Filter Bar */}
       <Card className="p-4">
-        <div className="grid gap-3 lg:grid-cols-[1fr_170px_170px_190px_auto]">
+        <div className="grid gap-3 lg:grid-cols-[1fr_160px_160px_180px_auto]">
           <Input
-            placeholder="Search client, email, phone, service, or notes..."
+            placeholder="Search client, email, phone..."
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') handleSearch()
-            }}
+            onKeyDown={(event) => { if (event.key === 'Enter') handleSearch() }}
             leftIcon={<MagnifyingGlass />}
           />
-
-          <select
-            value={statusFilter}
-            onChange={(event) => setStatusFilter(event.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-          >
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
             <option value="all">All statuses</option>
             <option value="scheduled">Scheduled</option>
             <option value="confirmed">Confirmed</option>
             <option value="completed">Completed</option>
             <option value="cancelled">Cancelled</option>
           </select>
-
-          <select
-            value={dateFilter}
-            onChange={(event) => setDateFilter(event.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-          >
+          <select value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
             <option value="all">All dates</option>
             <option value="today">Today</option>
             <option value="week">This week</option>
@@ -495,141 +518,184 @@ END:VCALENDAR`
             <option value="upcoming">Upcoming</option>
             <option value="past">Past</option>
           </select>
-
-          <select
-            value={advisorFilter}
-            onChange={(event) => setAdvisorFilter(event.target.value)}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100"
-          >
+          <select value={advisorFilter} onChange={(e) => setAdvisorFilter(e.target.value)}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 dark:border-gray-700 dark:bg-dark-bg-secondary dark:text-gray-100">
             <option value="all">All advisors</option>
             <option value="unassigned">Unassigned</option>
-            {advisors.map((advisor) => (
-              <option key={advisor.id} value={advisor.id}>
-                {advisor.name || advisor.email}
-              </option>
-            ))}
+            {advisors.map((a) => <option key={a.id} value={a.id}>{a.name || a.email}</option>)}
           </select>
-
-          <Button onClick={handleSearch} leftIcon={<MagnifyingGlass />}>
-            Search
-          </Button>
+          <Button onClick={handleSearch} leftIcon={<MagnifyingGlass />}>Search</Button>
         </div>
       </Card>
 
-      <div className="grid gap-6 2xl:grid-cols-[minmax(0,1fr)_360px]">
-        <Card className="overflow-hidden">
-          <div className="border-b border-gray-200 p-4 dark:border-gray-800">
-            <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-sm font-medium text-light-accent-primary dark:text-dark-accent-primary">
-                  <Calendar className="h-4 w-4" />
-                  Admin Calendar
-                </div>
-                <h2 className="mt-1 text-xl font-semibold">{visibleRangeLabel}</h2>
-              </div>
+      {/* Advisor color filter chips */}
+      {advisors.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-medium text-gray-500">View:</span>
+          <button
+            type="button"
+            onClick={() => setSelectedAdvisorIds(new Set(['all']))}
+            className={`rounded-full border-2 px-3 py-1 text-sm font-medium transition-all ${
+              selectedAdvisorIds.has('all') ? 'border-gray-800 bg-gray-800 text-white' : 'border-gray-300 bg-white text-gray-600 hover:border-gray-400'
+            }`}
+          >
+            All
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const next = new Set(selectedAdvisorIds)
+              next.delete('all')
+              next.has('unassigned') ? next.delete('unassigned') : next.add('unassigned')
+              setSelectedAdvisorIds(next)
+            }}
+            className={`flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-sm font-medium transition-all ${
+              selectedAdvisorIds.has('all') || selectedAdvisorIds.has('unassigned')
+                ? 'border-indigo-400 bg-indigo-100 text-indigo-800'
+                : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
+            }`}
+          >
+            <span className="h-2 w-2 rounded-full bg-indigo-500" />
+            Main
+          </button>
+          {advisors.map((advisor, index) => {
+            const color = ADVISOR_COLORS[index % ADVISOR_COLORS.length]
+            const isActive = selectedAdvisorIds.has('all') || selectedAdvisorIds.has(advisor.id)
+            return (
+              <button
+                key={advisor.id}
+                type="button"
+                onClick={() => {
+                  const next = new Set(selectedAdvisorIds)
+                  next.delete('all')
+                  next.has(advisor.id) ? next.delete(advisor.id) : next.add(advisor.id)
+                  setSelectedAdvisorIds(next)
+                }}
+                className={`flex items-center gap-1.5 rounded-full border-2 px-3 py-1 text-sm font-medium transition-all ${
+                  isActive ? color.chip : 'border-gray-200 bg-white text-gray-400 hover:border-gray-300'
+                }`}
+              >
+                <span className={`h-2 w-2 rounded-full ${color.dot}`} />
+                {(advisor.name || advisor.email).split(' ')[0]}
+              </button>
+            )
+          })}
+        </div>
+      )}
 
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-1 dark:border-gray-800 dark:bg-dark-bg-tertiary">
-                  {(Object.keys(modeLabels) as CalendarMode[]).map((mode) => (
-                    <button
-                      key={mode}
-                      type="button"
-                      onClick={() => setCalendarMode(mode)}
-                      className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+      {/* Calendar + Sidebar */}
+      <div className={`grid gap-4 ${isUpcomingCollapsed ? '' : 'lg:grid-cols-4'}`}>
+        <Card className={`overflow-hidden ${isUpcomingCollapsed ? '' : 'lg:col-span-3'}`}>
+          <div className="border-b border-gray-200 p-3 dark:border-gray-800">
+            <div className="flex flex-col gap-2">
+              {/* Row 1: view tabs + hide/show sidebar toggle */}
+              <div className="flex items-center justify-between">
+                <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-dark-bg-tertiary">
+                  {(['today', 'week', 'month'] as CalendarMode[]).map((mode) => (
+                    <button key={mode} type="button" onClick={() => setCalendarMode(mode)}
+                      className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors ${
                         calendarMode === mode
                           ? 'bg-white text-light-accent-primary shadow-sm dark:bg-dark-bg-secondary dark:text-dark-accent-primary'
                           : 'text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white'
-                      }`}
-                    >
-                      {modeLabels[mode]}
+                      }`}>
+                      {mode.charAt(0).toUpperCase() + mode.slice(1)}
                     </button>
                   ))}
                 </div>
-
-                <Button size="sm" variant="outline" onClick={() => navigateCalendar('previous')}>
-                  <CaretLeft className="h-4 w-4" />
-                </Button>
-                <Button size="sm" variant="outline" onClick={() => setCalendarDate(new Date())}>
-                  Today
-                </Button>
-                <Button size="sm" variant="outline" onClick={() => navigateCalendar('next')}>
-                  <CaretRight className="h-4 w-4" />
-                </Button>
+                <button
+                  type="button"
+                  onClick={() => setIsUpcomingCollapsed(!isUpcomingCollapsed)}
+                  className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+                >
+                  <CalendarBlank className="h-4 w-4" />
+                  {isUpcomingCollapsed
+                    ? <span className="text-light-accent-primary font-bold">({upcomingFiltered.length})</span>
+                    : <span>Hide</span>
+                  }
+                </button>
+              </div>
+              {/* Row 2: nav */}
+              <div className="flex items-center justify-center gap-2">
+                <Button size="sm" variant="outline" onClick={() => setCalendarDate(new Date())}>Today</Button>
+                <Button size="sm" variant="outline" onClick={() => navigateCalendar('previous')}><CaretLeft className="h-4 w-4" /></Button>
+                <span className="min-w-[180px] text-center text-sm font-semibold">{visibleRangeLabel}</span>
+                <Button size="sm" variant="outline" onClick={() => navigateCalendar('next')}><CaretRight className="h-4 w-4" /></Button>
               </div>
             </div>
           </div>
 
           {loading ? (
-            <div className="flex min-h-[420px] items-center justify-center">
+            <div className="flex min-h-[480px] items-center justify-center">
               <SpinnerGap className="h-8 w-8 animate-spin text-light-accent-primary" />
             </div>
           ) : calendarMode === 'today' ? (
-            <TodayCalendar
+            <TimeGridDay
               day={visibleDays[0]}
-              appointments={calendarAppointments}
-              onOpen={setSelectedAppointment}
+              appointments={filteredCalendarAppointments}
+              onOpen={(a) => { setShowCancelConfirm(false); setSelectedAppointment(a) }}
+              getAdvisorColor={getAdvisorColor}
             />
           ) : calendarMode === 'week' ? (
-            <WeekCalendar
+            <TimeGridWeek
               days={visibleDays}
-              appointmentsForDay={getAppointmentsForDay}
-              onOpen={setSelectedAppointment}
+              appointmentsForDay={(day) => filteredCalendarAppointments.filter((a) => a.date === toDateKey(day))}
+              onOpen={(a) => { setShowCancelConfirm(false); setSelectedAppointment(a) }}
+              getAdvisorColor={getAdvisorColor}
             />
           ) : (
             <MonthCalendar
               days={visibleDays}
               activeMonth={calendarDate.getMonth()}
-              appointmentsForDay={getAppointmentsForDay}
-              onOpen={setSelectedAppointment}
+              appointmentsForDay={(day) => filteredCalendarAppointments.filter((a) => a.date === toDateKey(day))}
+              onOpen={(a) => { setShowCancelConfirm(false); setSelectedAppointment(a) }}
+              getAdvisorColor={getAdvisorColor}
             />
           )}
         </Card>
 
-        <Card className="overflow-hidden">
-          <div className="border-b border-gray-200 p-4 dark:border-gray-800">
-            <div className="flex items-center justify-between gap-2 flex-wrap">
-              <h2 className="text-lg font-semibold">Upcoming Appointments</h2>
-              <div className="inline-flex rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-dark-bg-tertiary text-xs">
-                {(['today', 'week', 'month', 'all'] as const).map((f) => (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() => setUpcomingFilter(f)}
+        {/* Upcoming sidebar */}
+        {!isUpcomingCollapsed && (
+          <Card className="overflow-hidden">
+            <div className="border-b border-gray-200 p-4 dark:border-gray-800">
+              <h2 className="font-semibold">
+                Upcoming ({upcomingFiltered.length})
+              </h2>
+              <div className="mt-2 inline-flex gap-1 rounded-lg border border-gray-200 bg-gray-50 p-0.5 dark:border-gray-800 dark:bg-dark-bg-tertiary text-xs">
+                {(['week', 'month', 'all'] as const).map((f) => (
+                  <button key={f} type="button" onClick={() => setUpcomingFilter(f)}
                     className={`rounded-md px-2.5 py-1 font-medium capitalize transition-colors ${
                       upcomingFilter === f
                         ? 'bg-white text-light-accent-primary shadow-sm dark:bg-dark-bg-secondary dark:text-dark-accent-primary'
-                        : 'text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white'
-                    }`}
-                  >
-                    {f === 'week' ? 'This Week' : f === 'month' ? 'This Month' : f.charAt(0).toUpperCase() + f.slice(1)}
+                        : 'text-gray-500 hover:text-gray-800 dark:text-gray-400'
+                    }`}>
+                    {f === 'week' ? 'This Week' : f === 'month' ? 'This Month' : 'All'}
                   </button>
                 ))}
               </div>
             </div>
-            <p className="mt-1 text-sm text-gray-500">{upcomingFiltered.length} upcoming</p>
-          </div>
-
-          <div className="max-h-[720px] overflow-y-auto p-4">
-            {upcomingFiltered.length === 0 ? (
-              <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-                No upcoming appointments for this period.
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {upcomingFiltered.map((appointment) => (
-                  <AppointmentListItem
-                    key={appointment.id}
-                    appointment={appointment}
-                    onOpen={() => { setShowCancelConfirm(false); setSelectedAppointment(appointment) }}
-                    onConfirm={() => confirmAppointment(appointment.id)}
-                    onDownload={() => downloadICS(appointment)}
-                    actionLoading={actionLoading}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </Card>
+            <div className="max-h-[640px] overflow-y-auto p-3">
+              {upcomingFiltered.length === 0 ? (
+                <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-sm text-gray-500">
+                  <CalendarBlank className="h-8 w-8 text-gray-300" />
+                  No upcoming appointments
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {upcomingFiltered.map((appointment) => (
+                    <AppointmentListItem
+                      key={appointment.id}
+                      appointment={appointment}
+                      onOpen={() => { setShowCancelConfirm(false); setSelectedAppointment(appointment) }}
+                      onConfirm={() => confirmAppointment(appointment.id)}
+                      onDownload={() => downloadICS(appointment)}
+                      actionLoading={actionLoading}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+        )}
       </div>
 
       <Card className="overflow-hidden">
@@ -742,11 +808,16 @@ END:VCALENDAR`
   )
 }
 
-function StatBox({ label, value, tone = 'text-gray-900 dark:text-gray-100' }: { label: string; value: number; tone?: string }) {
+function StatCard({ icon, label, value, color, iconBg, iconColor }: { icon: React.ReactNode; label: string; value: number; color: string; iconBg: string; iconColor: string }) {
   return (
-    <Card className="p-4">
-      <div className={`text-2xl font-bold ${tone}`}>{value}</div>
-      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">{label}</div>
+    <Card className="flex items-center gap-4 p-5">
+      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${iconBg} ${iconColor}`}>
+        {icon}
+      </div>
+      <div>
+        <div className={`text-2xl font-bold ${color}`}>{value}</div>
+        <div className="text-sm text-gray-500 dark:text-gray-400">{label}</div>
+      </div>
     </Card>
   )
 }
@@ -761,121 +832,189 @@ function StatusBadge({ status }: { status: string }) {
 
 function TableHead({ children, align = 'left' }: { children: React.ReactNode; align?: 'left' | 'right' }) {
   return (
-    <th
-      className={`px-6 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 ${
-        align === 'right' ? 'text-right' : 'text-left'
-      }`}
-    >
+    <th className={`px-6 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400 ${align === 'right' ? 'text-right' : 'text-left'}`}>
       {children}
     </th>
   )
 }
 
-function MiniAppointment({ appointment, onOpen }: { appointment: Appointment; onOpen: () => void }) {
-  const clientName = appointment.client.name || appointment.client.email
+// Time-grid shared helper: position an appointment block absolutely within the hour grid
+function getBlockStyle(time: string, duration: number) {
+  const aptMins = parseTimeToMinutes(time)
+  const startMins = aptMins - CALENDAR_START_HOUR * 60
+  const top = (startMins / 60) * HOUR_HEIGHT
+  const height = Math.max((duration / 60) * HOUR_HEIGHT, 28)
+  return { top: `${top}px`, height: `${height}px` }
+}
 
+function CalendarHourGrid() {
+  const hours = Array.from({ length: CALENDAR_END_HOUR - CALENDAR_START_HOUR }, (_, i) => CALENDAR_START_HOUR + i)
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className="block w-full rounded-md border border-gray-200 bg-white p-2 text-left text-xs shadow-sm transition hover:border-light-accent-primary hover:bg-light-bg-secondary dark:border-gray-700 dark:bg-dark-bg-secondary dark:hover:border-dark-accent-primary dark:hover:bg-dark-bg-tertiary"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="font-semibold">{appointment.time}</span>
-        <StatusBadge status={appointment.status} />
-      </div>
-      <div className="mt-1 truncate font-medium">{clientName}</div>
-      <div className="truncate text-gray-500">{getServiceLabel(appointment.type)}</div>
-    </button>
+    <>
+      {hours.map((h) => (
+        <div key={h} className="border-b border-gray-100 dark:border-gray-800" style={{ height: `${HOUR_HEIGHT}px` }} />
+      ))}
+    </>
   )
 }
 
-function TodayCalendar({
+function TimeGridDay({
   day,
   appointments,
   onOpen,
+  getAdvisorColor,
 }: {
   day: Date
   appointments: Appointment[]
-  onOpen: (appointment: Appointment) => void
+  onOpen: (a: Appointment) => void
+  getAdvisorColor: (id: string | null) => typeof ADVISOR_COLORS[0]
 }) {
+  const hours = Array.from({ length: CALENDAR_END_HOUR - CALENDAR_START_HOUR }, (_, i) => CALENDAR_START_HOUR + i)
+  const now = new Date()
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  const showLine = currentHour >= CALENDAR_START_HOUR && currentHour < CALENDAR_END_HOUR && toDateKey(day) === toDateKey(now)
+  const lineTop = ((currentHour - CALENDAR_START_HOUR) * 60 + currentMinute) / 60 * HOUR_HEIGHT
+
   return (
-    <div className="p-4">
-      <div className="mb-4 text-sm font-medium text-gray-600 dark:text-gray-400">
-        {formatDisplayDate(day, { weekday: 'long', month: 'long', day: 'numeric' })}
-      </div>
-      <div className="space-y-2">
-        {timeSlots.map((slot) => {
-          const slotAppointments = appointments.filter((appointment) => sameTimeSlot(appointment.time, slot))
-          return (
-            <div key={slot} className="grid min-h-[74px] grid-cols-[88px_1fr] gap-3 border-t border-gray-100 py-3 dark:border-gray-800">
-              <div className="text-sm font-medium text-gray-500">{slot}</div>
-              <div className="space-y-2">
-                {slotAppointments.length === 0 ? (
-                  <div className="h-full rounded-lg border border-dashed border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-dark-bg-tertiary" />
-                ) : (
-                  slotAppointments.map((appointment) => (
-                    <MiniAppointment key={appointment.id} appointment={appointment} onOpen={() => onOpen(appointment)} />
-                  ))
-                )}
+    <div className="overflow-auto">
+      <div className="flex min-w-[320px]">
+        {/* Time column */}
+        <div className="w-14 flex-shrink-0 border-r border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-dark-bg-tertiary">
+          {hours.map((h) => {
+            const label = h > 12 ? `${h - 12} PM` : h === 12 ? '12 PM' : `${h} AM`
+            return (
+              <div key={h} className="flex items-start justify-end pr-2 pt-1 text-[11px] font-medium text-gray-400 dark:text-gray-500" style={{ height: `${HOUR_HEIGHT}px` }}>
+                {label}
               </div>
+            )
+          })}
+        </div>
+        {/* Day column */}
+        <div className="relative flex-1" style={{ height: `${(CALENDAR_END_HOUR - CALENDAR_START_HOUR) * HOUR_HEIGHT}px` }}>
+          <CalendarHourGrid />
+          {showLine && (
+            <div className="pointer-events-none absolute left-0 right-0 z-20 flex items-center" style={{ top: `${lineTop}px` }}>
+              <div className="h-2 w-2 rounded-full bg-red-500" />
+              <div className="h-0.5 flex-1 bg-red-500" />
             </div>
-          )
-        })}
+          )}
+          {appointments.map((apt) => {
+            const color = getAdvisorColor(apt.advisor?.id || null)
+            return (
+              <div
+                key={apt.id}
+                onClick={() => onOpen(apt)}
+                className={`absolute left-1 right-1 z-10 cursor-pointer overflow-hidden rounded-md border-l-4 p-1.5 text-xs shadow-sm transition hover:shadow-md ${color.bg} ${color.border} ${color.text}`}
+                style={getBlockStyle(apt.time, apt.duration)}
+              >
+                <div className="font-semibold truncate">{apt.time} – {getEndTime(apt.time, apt.duration)}</div>
+                <div className="truncate">{apt.client.name || apt.client.email}</div>
+                <div className="truncate text-[11px] opacity-75">{apt.duration}min</div>
+              </div>
+            )
+          })}
+        </div>
       </div>
     </div>
   )
 }
 
-function WeekCalendar({
+function TimeGridWeek({
   days,
   appointmentsForDay,
   onOpen,
+  getAdvisorColor,
 }: {
   days: Date[]
   appointmentsForDay: (day: Date) => Appointment[]
-  onOpen: (appointment: Appointment) => void
+  onOpen: (a: Appointment) => void
+  getAdvisorColor: (id: string | null) => typeof ADVISOR_COLORS[0]
 }) {
-  const todayKey = toDateKey(new Date())
+  const hours = Array.from({ length: CALENDAR_END_HOUR - CALENDAR_START_HOUR }, (_, i) => CALENDAR_START_HOUR + i)
+  const now = new Date()
+  const todayKey = toDateKey(now)
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  const showLine = currentHour >= CALENDAR_START_HOUR && currentHour < CALENDAR_END_HOUR
+  const lineTop = ((currentHour - CALENDAR_START_HOUR) * 60 + currentMinute) / 60 * HOUR_HEIGHT
+  const gridHeight = (CALENDAR_END_HOUR - CALENDAR_START_HOUR) * HOUR_HEIGHT
 
   return (
     <div className="overflow-x-auto">
-      <div className="min-w-[980px]">
-        <div className="grid grid-cols-7 border-b border-gray-200 dark:border-gray-800">
-          {days.map((day) => {
-            const dayKey = toDateKey(day)
-            return (
-              <div key={dayKey} className={`p-3 text-center ${dayKey === todayKey ? 'bg-light-accent-primary/5 dark:bg-dark-accent-primary/10' : ''}`}>
-                <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-                  {day.toLocaleDateString('en-US', { weekday: 'short' })}
+      <div className="min-w-[640px]">
+        {/* Day headers */}
+        <div className="flex sticky top-0 z-10 border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-dark-bg-secondary">
+          <div className="w-14 flex-shrink-0 border-r border-gray-100 dark:border-gray-800" />
+          <div className="flex flex-1">
+            {days.map((day) => {
+              const key = toDateKey(day)
+              return (
+                <div key={key} className={`flex-1 border-l border-gray-100 py-2.5 text-center dark:border-gray-800 ${key === todayKey ? 'bg-light-accent-primary/5 dark:bg-dark-accent-primary/10' : ''}`}>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    {day.toLocaleDateString('en-US', { weekday: 'short' })}
+                  </div>
+                  <div className={`text-xl font-bold ${key === todayKey ? 'text-light-accent-primary dark:text-dark-accent-primary' : ''}`}>
+                    {day.getDate()}
+                  </div>
                 </div>
-                <div className={`mt-1 text-xl font-bold ${dayKey === todayKey ? 'text-light-accent-primary dark:text-dark-accent-primary' : ''}`}>
-                  {day.getDate()}
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-        <div className="grid grid-cols-7">
-          {days.map((day) => {
-            const appointments = appointmentsForDay(day)
-            const dayKey = toDateKey(day)
-            return (
-              <div key={dayKey} className="min-h-[520px] border-r border-gray-100 p-3 last:border-r-0 dark:border-gray-800">
-                {appointments.length === 0 ? (
-                  <div className="rounded-lg border border-dashed border-gray-200 p-4 text-center text-xs text-gray-500 dark:border-gray-800">
-                    Open
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {appointments.map((appointment) => (
-                      <MiniAppointment key={appointment.id} appointment={appointment} onOpen={() => onOpen(appointment)} />
-                    ))}
-                  </div>
-                )}
+
+        {/* Time grid */}
+        <div className="flex">
+          {/* Time labels */}
+          <div className="w-14 flex-shrink-0 border-r border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-dark-bg-tertiary">
+            {hours.map((h) => {
+              const label = h > 12 ? `${h - 12} PM` : h === 12 ? '12 PM' : `${h} AM`
+              return (
+                <div key={h} className="flex items-start justify-end pr-2 pt-1 text-[11px] font-medium text-gray-400 dark:text-gray-500" style={{ height: `${HOUR_HEIGHT}px` }}>
+                  {label}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Day columns */}
+          <div className="relative flex flex-1">
+            {/* Current time red line */}
+            {showLine && (
+              <div className="pointer-events-none absolute left-0 right-0 z-20 flex items-center" style={{ top: `${lineTop}px` }}>
+                <div className="h-2 w-2 rounded-full bg-red-500 -ml-1" />
+                <div className="h-0.5 flex-1 bg-red-500" />
               </div>
-            )
-          })}
+            )}
+            {days.map((day) => {
+              const key = toDateKey(day)
+              const dayAppts = appointmentsForDay(day)
+              return (
+                <div key={key} className={`relative flex-1 border-l border-gray-100 dark:border-gray-800 ${key === todayKey ? 'bg-light-accent-primary/5 dark:bg-dark-accent-primary/5' : ''}`} style={{ height: `${gridHeight}px` }}>
+                  <CalendarHourGrid />
+                  {dayAppts.map((apt) => {
+                    const color = getAdvisorColor(apt.advisor?.id || null)
+                    return (
+                      <div
+                        key={apt.id}
+                        onClick={() => onOpen(apt)}
+                        className={`absolute left-0.5 right-0.5 z-10 cursor-pointer overflow-hidden rounded-md border-l-4 p-1 text-xs shadow-sm transition hover:shadow-md ${
+                          apt.status === 'cancelled' ? 'bg-red-50 border-l-red-400 text-red-700 opacity-60' :
+                          apt.status === 'completed' ? 'bg-gray-100 border-l-gray-400 text-gray-700' :
+                          `${color.bg} ${color.border} ${color.text}`
+                        }`}
+                        style={getBlockStyle(apt.time, apt.duration)}
+                      >
+                        <div className="font-semibold truncate">{apt.time} – {getEndTime(apt.time, apt.duration)}</div>
+                        <div className="truncate">{apt.client.name || apt.client.email}</div>
+                        <div className="truncate text-[10px] opacity-75">{apt.duration}min</div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -887,11 +1026,13 @@ function MonthCalendar({
   activeMonth,
   appointmentsForDay,
   onOpen,
+  getAdvisorColor,
 }: {
   days: Date[]
   activeMonth: number
   appointmentsForDay: (day: Date) => Appointment[]
   onOpen: (appointment: Appointment) => void
+  getAdvisorColor: (id: string | null) => typeof ADVISOR_COLORS[0]
 }) {
   const todayKey = toDateKey(new Date())
 
@@ -924,16 +1065,19 @@ function MonthCalendar({
                 {day.getDate()}
               </div>
               <div className="space-y-1">
-                {appointments.slice(0, 3).map((appointment) => (
-                  <button
-                    key={appointment.id}
-                    type="button"
-                    onClick={() => onOpen(appointment)}
-                    className="block w-full truncate rounded bg-light-accent-primary/10 px-2 py-1 text-left text-xs font-medium text-light-accent-primary hover:bg-light-accent-primary/20 dark:bg-dark-accent-primary/15 dark:text-dark-accent-primary"
-                  >
-                    {appointment.time} {appointment.client.name || appointment.client.email}
-                  </button>
-                ))}
+                {appointments.slice(0, 3).map((appointment) => {
+                  const color = getAdvisorColor(appointment.advisor?.id || null)
+                  return (
+                    <button
+                      key={appointment.id}
+                      type="button"
+                      onClick={() => onOpen(appointment)}
+                      className={`block w-full truncate rounded border-l-2 px-1.5 py-0.5 text-left text-xs font-medium ${color.bg} ${color.border} ${color.text} hover:opacity-80`}
+                    >
+                      {appointment.time} {appointment.client.name || appointment.client.email}
+                    </button>
+                  )
+                })}
                 {appointments.length > 3 && (
                   <div className="px-2 text-xs text-gray-500">+{appointments.length - 3} more</div>
                 )}
